@@ -1,0 +1,142 @@
+/* Funky Gen Z Neo-Brutalist & Cyber Y2K Styles */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@700;800&display=swap');
+
+:root {
+  --wonder-yellow: #ffea00;
+  --wonder-pink: #ff2975;
+  --wonder-lime: #a6ff00;
+  --wonder-purple: #7c3aed;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #faf9fd;
+  color: #0f172a;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Modern Gen Z Glassmorphic Light Cards */
+.wonder-glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 41, 117, 0.12);
+  box-shadow: 0 20px 40px -15px rgba(255, 41, 117, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.wonder-glass-card-yellow {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 234, 0, 0.4);
+  box-shadow: 0 20px 40px -15px rgba(255, 234, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.wonder-pill-input {
+  background: #f1f0f7;
+  border: 1.5px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.wonder-pill-input:focus {
+  background: #ffffff;
+  border-color: #ff2975;
+  box-shadow: 0 0 0 4px rgba(255, 41, 117, 0.12);
+}
+
+.font-heading {
+  font-family: 'Syne', 'Space Grotesk', sans-serif;
+}
+
+.font-playful {
+  font-family: 'Fredoka', cursive, sans-serif;
+}
+
+.font-mono-funky {
+  font-family: 'Space Grotesk', monospace;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0d0e15;
+}
+::-webkit-scrollbar-thumb {
+  background: #252836;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff2e93;
+}
+
+/* Marquee continuous scroll */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: 200%;
+  animation: marquee 16s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Sticker wobble / pulse */
+@keyframes wobble {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+.animate-wobble {
+  animation: wobble 3s ease-in-out infinite;
+}
+
+/* Neo-brutalist shadows & tactile buttons */
+.brutal-shadow {
+  box-shadow: 4px 4px 0px #000000;
+}
+
+.brutal-shadow-sm {
+  box-shadow: 2px 2px 0px #000000;
+}
+
+.brutal-shadow-neon {
+  box-shadow: 4px 4px 0px #ff2e93;
+}
+
+.brutal-shadow-lime {
+  box-shadow: 4px 4px 0px #ccff00;
+}
+
+.brutal-shadow-cyan {
+  box-shadow: 4px 4px 0px #00f0ff;
+}
+
+.brutal-btn {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.brutal-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000000;
+}
+
+.brutal-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #000000;
+}
+
+/* Hide scrollbar for story pills horizontal scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Virtual Try On",
+  "description": "A high-fidelity virtual try-on application that seamlessly drapes garments onto users while preserving their identity and surroundings using advanced AI.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": []
+}

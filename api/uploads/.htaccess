@@ -1,0 +1,16 @@
+# Block PHP execution in the uploads folder.
+# Without this, someone could upload a .php file disguised as an image
+# and run arbitrary code on your server.
+
+<FilesMatch "\.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Only allow image files to be served
+<FilesMatch "\.(jpg|jpeg|png|webp|gif)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+Options -Indexes
