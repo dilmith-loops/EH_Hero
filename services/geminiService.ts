@@ -149,6 +149,10 @@ export async function transformImageToAnime(
 - ABSOLUTELY ZERO WHITE BORDERS / ZERO WHITE MARGINS / ZERO WHITE PADDING: Do NOT add any white box, white border frame, polaroid border, or white background bars around the character or image under any circumstances!
 - The background artwork and color gradient MUST extend all the way to the very edges of the 1:1 image.
 
+5. UN-ZOOMED WIDE CAMERA ANGLE (DO NOT CROP OR ZOOM IN):
+- PULL THE CAMERA BACK: Render a wide medium shot showing the character from head down to chest/waist.
+- DO NOT ZOOM IN ON THE FACE: The character's face MUST NOT fill the whole frame! Leave generous background space above the top of the hair and on both sides of the shoulders so the character fits comfortably inside the 1:1 canvas.
+
 ${customInstruction}${treatImageReferenceNotice}`;
 
   onProgress?.('coloring');
