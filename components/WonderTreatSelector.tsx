@@ -30,8 +30,8 @@ export const WonderTreatSelector: React.FC<WonderTreatSelectorProps> = ({
                 group relative p-2 rounded-2xl text-center transition-all duration-200 flex items-center justify-center overflow-visible
                 ${
                   isSelected
-                    ? 'bg-gradient-to-b from-pink-50 via-white to-yellow-50 border-2 border-[#ff2975] shadow-[0_6px_16px_-4px_rgba(255,41,117,0.3)]'
-                    : 'bg-white border border-slate-200/80 hover:border-pink-200 shadow-sm opacity-90 hover:opacity-100'
+                    ? 'bg-gradient-to-b from-orange-50 via-white to-rose-50 border-2 border-[#e65c40] shadow-[0_6px_16px_-4px_rgba(230,92,64,0.3)] scale-[1.02]'
+                    : 'bg-white/90 border border-orange-100 hover:border-orange-300 shadow-sm opacity-90 hover:opacity-100'
                 }
               `}
             >

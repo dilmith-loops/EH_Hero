@@ -27,34 +27,28 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
 
   return (
     <div className="space-y-3">
-      {/* Main Image Container: Fits entire character inside frame without clipping */}
-      <div className="relative aspect-square w-full rounded-3xl overflow-hidden select-none border border-slate-200/80 bg-slate-950 shadow-lg flex items-center justify-center">
-        {/* Layer 1: Blurred background fill */}
-        <img
-          src={showOriginal ? originalUrl : animeUrl}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover filter blur-xl opacity-60 scale-110 pointer-events-none"
-        />
-
-        {/* Layer 2: Main Image - Fitted completely inside frame without any head or side cropping */}
+      {/* Main Image View: Clean image without extra frame, box background, or side blur */}
+      <div className="relative w-full select-none flex flex-col items-center justify-center">
         <img
           src={showOriginal ? originalUrl : animeUrl}
           alt={showOriginal ? 'Original photo' : 'Wonder Anime Hero'}
-          className="relative z-10 w-full h-full object-contain filter drop-shadow-md"
+          className="w-full max-h-[62vh] object-contain rounded-3xl shadow-xl border border-pink-100/50"
         />
 
-        {/* View Original Image Toggle Button */}
-        <button
-          type="button"
-          onMouseDown={() => setShowOriginal(true)}
-          onMouseUp={() => setShowOriginal(false)}
-          onMouseLeave={() => setShowOriginal(false)}
-          onTouchStart={() => setShowOriginal(true)}
-          onTouchEnd={() => setShowOriginal(false)}
-          className="absolute top-3 right-3 px-3.5 py-2 rounded-full bg-slate-900/85 hover:bg-slate-900 text-white font-extrabold text-xs backdrop-blur-md border border-white/20 shadow-md active:scale-95 transition-all flex items-center gap-1.5 z-20"
-        >
-          <span>{showOriginal ? '📸 ORIGINAL' : '👁️ HOLD TO SEE ORIGINAL'}</span>
-        </button>
+        {/* Hold to see original button centered directly below the image */}
+        <div className="flex justify-center pt-2.5">
+          <button
+            type="button"
+            onMouseDown={() => setShowOriginal(true)}
+            onMouseUp={() => setShowOriginal(false)}
+            onMouseLeave={() => setShowOriginal(false)}
+            onTouchStart={() => setShowOriginal(true)}
+            onTouchEnd={() => setShowOriginal(false)}
+            className="px-4 py-2 rounded-full bg-slate-900/90 hover:bg-slate-950 text-white font-extrabold text-xs backdrop-blur-md border border-white/20 shadow-md active:scale-95 transition-all flex items-center gap-1.5"
+          >
+            <span>{showOriginal ? '📸 ORIGINAL' : '👁️ HOLD TO SEE ORIGINAL'}</span>
+          </button>
+        </div>
       </div>
 
       {/* Action Buttons Bar */}

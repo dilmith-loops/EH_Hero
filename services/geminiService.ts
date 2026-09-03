@@ -131,8 +131,10 @@ export async function transformImageToAnime(
 - COMPLETE ARTISTIC REDRAW: You MUST completely redraw the person's face, skin, eyes, hair, and clothing into a stylized 2D anime/manga digital illustration with clean drawn line art, smooth vibrant anime cel-shading, and bright anime highlights!
 - NO REALISTIC SKIN TEXTURES: The face and skin must NOT be left as a realistic photo. Render every inch of skin, hair, eyes, and clothing in 2D animated cartoon art style.
 
-2. FACIAL LIKENESS & ANATOMY CONTROL (KEEP CHARACTER EXACTLY THE SAME):
-- 100% RECOGNIZABLE INDIVIDUAL: Keep the exact facial structure, eye shape, nose shape, smile, hairstyle, and facial proportions of the person in Image 1 so they are immediately recognizable as an anime character version of themselves.
+2. PERFECT FACIAL LIKENESS & RECOGNIZABLE FEATURES (HIGHEST PRIORITY - DO NOT ALTER FACE):
+- 100% IDENTICAL FACIAL IDENTITY: Preserve the person's EXACT real face shape, exact eye shape & eye color, exact nose structure, lip shape, cheekbones, smile line, facial proportions, skin tone, beard/facial hair, and beauty marks/moles.
+- DO NOT CHANGE THE FACE TO A GENERIC ANIME FACE: Anyone looking at the portrait MUST instantly recognize the exact individual from Image 1. Maintain their real facial expression, personality, and identity completely!
+- EXACT HAIRSTYLE & OUTFIT: Keep their identical haircut, hair texture, and exact clothing pattern/colors from Image 1.
 - EXACTLY TWO ARMS & TWO HANDS TOTAL: The character has ONLY TWO arms and TWO hands. Modify ONE hand from Image 1 to hold the "${selectedTreat.name}" ice cream bar naturally on its wooden stick near their chest/shoulder. Ensure hand and fingers are drawn in clean 2D anime art style.
 - NO EXTRA HANDS / NO DUPLICATE ARMS under any circumstances.
 
@@ -142,10 +144,10 @@ export async function transformImageToAnime(
   * Add soft glowing anime bokeh lights and smooth color aura gradients in matching treat colors.
   * DO NOT ADD floating food items, candies, toffee, or ice crystals.
 
-4. PRODUCT & 1:1 SQUARE ASPECT RATIO CANVAS:
-- Single "${selectedTreat.name}" ice cream bar on a wooden stick drawn in vivid 2D artwork style matching Image 2 reference.
-- EXACT 1:1 SQUARE ASPECT RATIO: The output image MUST be generated in a 1:1 square format (equal width and height).
-- 100% FULL BLEED: Complete edge-to-edge 2D animation artwork with ZERO white margins, zero pillarboxing, and zero letterboxing. Fill all 4 corners with background color and artwork!
+4. STRICT 100% FULL-BLEED BACKGROUND FILL (ZERO WHITE BORDERS):
+- 100% FULL BLEED ARTWORK: The colorful 2D anime background MUST fill 100% of the canvas edge-to-edge on all 4 sides.
+- ABSOLUTELY ZERO WHITE BORDERS / ZERO WHITE MARGINS / ZERO WHITE PADDING: Do NOT add any white box, white border frame, polaroid border, or white background bars around the character or image under any circumstances!
+- The background artwork and color gradient MUST extend all the way to the very edges of the 1:1 image.
 
 ${customInstruction}${treatImageReferenceNotice}`;
 

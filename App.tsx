@@ -157,6 +157,19 @@ const App: React.FC = () => {
     }
   };
 
+  const handleDownload = (resultToDownload: AnimeResult) => {
+    try {
+      const link = document.createElement('a');
+      link.href = resultToDownload.animeUrl;
+      link.download = `wonder-anime-hero-${resultToDownload.treatId}-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('Download error:', err);
+    }
+  };
+
   const handleShare = async (resultToShare: AnimeResult) => {
     try {
       if (navigator.share) {
@@ -184,9 +197,9 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-screen bg-[#faf9fd] text-[#0f172a] flex flex-col justify-center items-center p-3 sm:p-4 select-none overflow-y-auto relative">
+    <div className="min-h-[100dvh] w-full bg-gradient-to-b from-[#fdeee9] via-[#fceae5] to-[#fcd9ce] text-[#0f172a] flex flex-col justify-center items-center p-3 sm:p-6 md:p-8 select-none overflow-x-hidden overflow-y-auto relative">
       {/* Background Soft Glow */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-96 bg-gradient-to-b from-pink-200/40 via-purple-100/30 to-transparent blur-3xl pointer-events-none -z-10" />
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-xl h-96 bg-gradient-to-b from-orange-200/30 via-rose-200/20 to-transparent blur-3xl pointer-events-none -z-10" />
 
       {/* Loading Overlay */}
       {loading && (
@@ -255,11 +268,12 @@ const App: React.FC = () => {
 
         {/* STEP 2: PERFECTLY FITTED CARD WITH ZERO EMPTY WHITESPACE */}
         {currentStep === 'upload' && (
-          <div className="wonder-glass-card p-4 rounded-3xl flex flex-col space-y-3.5 shadow-xl animate-fade-in">
-            {/* Header inside Card with EH Logo on Left & Wonder Logo on Right */}
-            <div className="flex items-center justify-between shrink-0 pb-2 border-b border-pink-100/60">
-              <img src={`${baseUrl}eh-logo.png`} alt="Elephant House" className="h-6 object-contain" />
-              <img src={`${baseUrl}wonder.png`} alt="Wonder" className="h-6 object-contain" />
+          <div className="wonder-colorful-card p-4 rounded-3xl flex flex-col space-y-3.5 shadow-2xl animate-fade-in">
+            {/* Header inside Card with Scaled Up & Centered Logos */}
+            <div className="flex items-center justify-center gap-3 sm:gap-4 shrink-0 pb-2.5 border-b border-pink-100/60">
+              <img src={`${baseUrl}eh-logo.png`} alt="Elephant House" className="h-10 sm:h-12 object-contain filter drop-shadow-sm" />
+              <span className="text-pink-300 font-bold text-base">✕</span>
+              <img src={`${baseUrl}wonder.png`} alt="Wonder" className="h-10 sm:h-12 object-contain filter drop-shadow-[0_4px_12px_rgba(255,41,117,0.3)]" />
             </div>
 
             {/* Top: Expanded Image Uploader Box */}
@@ -316,30 +330,30 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {/* STEP 3: RESULT IN SINGLE CARD WITH EMBEDDED LOGO HEADER */}
+        {/* STEP 3: RESULT SCREEN */}
         {currentStep === 'result' && currentResult && (
-          <div className="wonder-glass-card p-4 rounded-3xl flex flex-col space-y-3.5 shadow-xl animate-fade-in">
-            <div className="flex items-center justify-between shrink-0 pb-2 border-b border-pink-100/60">
-              <img src={`${baseUrl}eh-logo.png`} alt="Elephant House" className="h-6 object-contain" />
-              <img src={`${baseUrl}wonder.png`} alt="Wonder" className="h-6 object-contain" />
+          <div className="w-full flex flex-col space-y-3 animate-fade-in">
+            {/* Top Centered Brand Logos */}
+            <div className="flex items-center justify-center gap-3 sm:gap-4 shrink-0 pb-1">
+              <img src={`${baseUrl}eh-logo.png`} alt="Elephant House" className="h-10 sm:h-12 object-contain filter drop-shadow-sm" />
+              <span className="text-[#e65c40] font-black text-lg">✕</span>
+              <img src={`${baseUrl}wonder.png`} alt="Wonder" className="h-10 sm:h-12 object-contain filter drop-shadow-[0_4px_12px_rgba(230,92,64,0.35)]" />
             </div>
 
-            <div className="flex-1 min-h-0 flex flex-col justify-center">
-              <BeforeAfterSlider
-                originalUrl={currentResult.originalUrl}
-                animeUrl={currentResult.animeUrl}
-                styleName={currentResult.styleName}
-                styleEmoji={currentResult.styleEmoji}
-                treatName={currentResult.treatName}
-                treatEmoji={currentResult.treatEmoji}
-                vibeTag={currentResult.vibeTag}
-                onExpand={() => setIsLightboxOpen(true)}
-                onDownload={() => handleDownload(currentResult)}
-                onReset={() => setCurrentStep('upload')}
-                onShare={() => handleShare(currentResult)}
-                onRetake={handleRetake}
-              />
-            </div>
+            <BeforeAfterSlider
+              originalUrl={currentResult.originalUrl}
+              animeUrl={currentResult.animeUrl}
+              styleName={currentResult.styleName}
+              styleEmoji={currentResult.styleEmoji}
+              treatName={currentResult.treatName}
+              treatEmoji={currentResult.treatEmoji}
+              vibeTag={currentResult.vibeTag}
+              onExpand={() => setIsLightboxOpen(true)}
+              onDownload={() => handleDownload(currentResult)}
+              onReset={() => setCurrentStep('upload')}
+              onShare={() => handleShare(currentResult)}
+              onRetake={handleRetake}
+            />
           </div>
         )}
       </div>

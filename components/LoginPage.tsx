@@ -30,8 +30,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col justify-between items-center p-4 sm:p-6 overflow-hidden animate-fade-in">
-      {/* Background Poster Image - Fitted so characters fit inside frame perfectly */}
+    <div className="relative min-h-[100dvh] w-full flex flex-col justify-between items-center p-4 sm:p-6 pb-8 sm:pb-10 overflow-x-hidden overflow-y-auto animate-fade-in">
+      {/* Background Poster Image */}
       <img
         src={`${baseUrl}Login.jpeg`}
         alt="Wonder Anime Hero"

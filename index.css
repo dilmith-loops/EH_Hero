@@ -18,29 +18,24 @@ body {
 
 /* Modern Gen Z Glassmorphic Light Cards */
 .wonder-glass-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 41, 117, 0.12);
-  box-shadow: 0 20px 40px -15px rgba(255, 41, 117, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(255, 41, 117, 0.2);
+  box-shadow: 0 25px 50px -15px rgba(255, 41, 117, 0.25), 0 8px 24px rgba(0, 0, 0, 0.04);
 }
 
-.wonder-glass-card-yellow {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 234, 0, 0.4);
-  box-shadow: 0 20px 40px -15px rgba(255, 234, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.03);
+.wonder-colorful-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 240, 246, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 41, 117, 0.25);
+  box-shadow: 0 20px 40px -10px rgba(180, 30, 133, 0.2), 0 0 30px rgba(255, 234, 0, 0.15);
 }
 
-.wonder-pill-input {
-  background: #f1f0f7;
-  border: 1.5px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.wonder-pill-input:focus {
-  background: #ffffff;
-  border-color: #ff2975;
-  box-shadow: 0 0 0 4px rgba(255, 41, 117, 0.12);
+.wonder-rainbow-bg {
+  background: radial-gradient(circle at 10% 20%, rgba(255, 234, 0, 0.25) 0%, transparent 40%),
+              radial-gradient(circle at 90% 80%, rgba(255, 41, 117, 0.25) 0%, transparent 40%),
+              radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.15) 0%, transparent 60%),
+              linear-gradient(135deg, #fff0f5 0%, #fff9e6 50%, #f3f0ff 100%);
 }
 
 .font-heading {
