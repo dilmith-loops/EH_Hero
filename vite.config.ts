@@ -5,14 +5,12 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     return {
-      base: '/fiton/',
+      base: '/EH-Hero/',
       server: {
         port: 3000,
         host: '0.0.0.0',
-        // Proxy /api calls to Laragon's PHP server during local development.
-        // Change the target if your Laragon site is at a different URL.
         proxy: {
-          '/fiton/api': {
+          '/EH-Hero/api': {
             target: 'http://localhost',
             changeOrigin: true,
           },

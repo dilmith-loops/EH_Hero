@@ -11,7 +11,7 @@ define('DB_PASS',     '');           // Hostinger: change to your DB password
 // APP_URL: the public base URL of your site (no trailing slash).
 // Local Laragon example: 'http://localhost/virtual-try-on'
 // Hostinger example:     'https://yourdomain.com'
-define('APP_URL',     'https://ai.loopsintegrated.co/fiton');
+define('APP_URL',     'https://ai.loopsintegrated.co/EH-Hero');
 
 define('UPLOADS_DIR', __DIR__ . '/uploads/');
 define('UPLOADS_URL', APP_URL . '/api/uploads/');
