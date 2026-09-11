@@ -16,17 +16,15 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Modern Gen Z Glassmorphic Light Cards */
+/* Clean Solid White Cards */
 .wonder-glass-card {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(20px);
+  background: #ffffff;
   border: 1.5px solid rgba(255, 41, 117, 0.2);
   box-shadow: 0 25px 50px -15px rgba(255, 41, 117, 0.25), 0 8px 24px rgba(0, 0, 0, 0.04);
 }
 
 .wonder-colorful-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 240, 246, 0.95) 100%);
-  backdrop-filter: blur(20px);
+  background: #ffffff;
   border: 2px solid rgba(255, 41, 117, 0.25);
   box-shadow: 0 20px 40px -10px rgba(180, 30, 133, 0.2), 0 0 30px rgba(255, 234, 0, 0.15);
 }

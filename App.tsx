@@ -197,9 +197,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[100dvh] w-full bg-gradient-to-b from-[#fdeee9] via-[#fceae5] to-[#fcd9ce] text-[#0f172a] flex flex-col justify-center items-center p-3 sm:p-6 md:p-8 select-none overflow-x-hidden overflow-y-auto relative">
-      {/* Background Soft Glow */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-xl h-96 bg-gradient-to-b from-orange-200/30 via-rose-200/20 to-transparent blur-3xl pointer-events-none -z-10" />
+    <div className="h-[100dvh] max-h-[100dvh] w-full bg-[#faf9fd] text-[#0f172a] flex flex-col justify-center items-center p-0 sm:p-4 select-none overflow-hidden relative">
 
       {/* Loading Overlay */}
       {loading && (
@@ -253,14 +251,14 @@ const App: React.FC = () => {
               onClick={() => handleDownload(currentResult)}
               className="w-full py-4 rounded-2xl bg-[#ffea00] text-slate-900 font-black text-sm shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2"
             >
-              <span>SAVE TO GALLERY 💾</span>
+              <span>SAVE TO GALLERY</span>
             </button>
           </div>
         </div>
       )}
 
       {/* Main Single Card Container */}
-      <div className="w-full max-w-md my-auto">
+      <div className="w-full h-full max-h-full sm:h-auto sm:max-h-[100dvh] sm:max-w-md my-auto flex flex-col justify-between overflow-hidden">
         {/* STEP 1: LOGIN */}
         {currentStep === 'login' && (
           <LoginPage onLogin={handleLogin} />
@@ -268,7 +266,7 @@ const App: React.FC = () => {
 
         {/* STEP 2: PERFECTLY FITTED CARD WITH ZERO EMPTY WHITESPACE */}
         {currentStep === 'upload' && (
-          <div className="wonder-colorful-card p-4 rounded-3xl flex flex-col space-y-3.5 shadow-2xl animate-fade-in">
+          <div className="wonder-colorful-card w-full h-full sm:h-auto max-h-full sm:max-h-[100dvh] p-3.5 sm:p-4 sm:rounded-3xl rounded-none flex flex-col justify-between space-y-3 shadow-2xl animate-fade-in overflow-hidden">
             {/* Header inside Card with Scaled Up & Centered Logos */}
             <div className="flex items-center justify-center gap-3 sm:gap-4 shrink-0 pb-2.5 border-b border-pink-100/60">
               <img src={`${baseUrl}eh-logo.png`} alt="Elephant House" className="h-10 sm:h-12 object-contain filter drop-shadow-sm" />
@@ -332,12 +330,12 @@ const App: React.FC = () => {
 
         {/* STEP 3: RESULT SCREEN */}
         {currentStep === 'result' && currentResult && (
-          <div className="w-full flex flex-col space-y-3 animate-fade-in">
-            {/* Top Centered Brand Logos */}
-            <div className="flex items-center justify-center gap-3 sm:gap-4 shrink-0 pb-1">
-              <img src={`${baseUrl}eh-logo.png`} alt="Elephant House" className="h-10 sm:h-12 object-contain filter drop-shadow-sm" />
-              <span className="text-[#e65c40] font-black text-lg">✕</span>
-              <img src={`${baseUrl}wonder.png`} alt="Wonder" className="h-10 sm:h-12 object-contain filter drop-shadow-[0_4px_12px_rgba(230,92,64,0.35)]" />
+          <div className="wonder-colorful-card w-full h-full sm:h-auto max-h-full sm:max-h-[100dvh] p-3 sm:p-4 sm:rounded-3xl rounded-none flex flex-col justify-between space-y-2.5 shadow-2xl animate-fade-in overflow-hidden">
+            {/* Header inside Card with Scaled Up & Centered Logos */}
+            <div className="flex items-center justify-center gap-3 sm:gap-4 shrink-0 pb-2 border-b border-pink-100/60">
+              <img src={`${baseUrl}eh-logo.png`} alt="Elephant House" className="h-9 sm:h-11 object-contain filter drop-shadow-sm" />
+              <span className="text-pink-300 font-bold text-base">✕</span>
+              <img src={`${baseUrl}wonder.png`} alt="Wonder" className="h-9 sm:h-11 object-contain filter drop-shadow-[0_4px_12px_rgba(255,41,117,0.3)]" />
             </div>
 
             <BeforeAfterSlider

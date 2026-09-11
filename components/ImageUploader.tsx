@@ -95,8 +95,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
               preview
                 ? 'bg-slate-950 shadow-md'
                 : isDragging
-                ? 'border-2 border-[#ff2975] bg-pink-50/50 scale-[1.01]'
-                : 'border-2 border-dashed border-slate-200/80 hover:border-pink-300 bg-slate-50/60 hover:bg-white shadow-sm'
+                ? 'border-2 border-[#ff2975] bg-pink-50/80 scale-[1.01]'
+                : 'border-2 border-dashed border-white/90 hover:border-pink-300 bg-white/60 backdrop-blur-xl hover:bg-white/80 shadow-sm'
             }
           `}
         >

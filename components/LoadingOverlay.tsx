@@ -7,29 +7,11 @@ interface LoadingOverlayProps {
   treatName?: string;
 }
 
-export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ phase }) => {
+export const LoadingOverlay: React.FC<LoadingOverlayProps> = () => {
   const baseUrl = import.meta.env.BASE_URL || '/';
-  const [displayPercent, setDisplayPercent] = React.useState(15);
-
-  const phasesOrder: AnimeGenerationPhase[] = ['analyzing', 'sketching', 'inking', 'coloring'];
-  const currentIdx = phasesOrder.indexOf(phase);
-  const targetPercent = Math.min(92, Math.max(25, Math.round(((currentIdx + 1) / phasesOrder.length) * 90)));
-
-  // Smooth live percentage timer
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setDisplayPercent((prev) => {
-        if (prev < targetPercent) return prev + 1;
-        if (prev < 92) return prev + 1;
-        return prev;
-      });
-    }, 180);
-
-    return () => clearInterval(interval);
-  }, [targetPercent]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-gradient-to-b from-[#fdeee9] via-[#fceae5] to-[#fcd9ce]/95 backdrop-blur-2xl flex flex-col items-center justify-center p-6 text-center select-none animate-fade-in">
+    <div className="fixed inset-0 z-50 bg-white/95 backdrop-blur-2xl flex flex-col items-center justify-center p-6 text-center select-none animate-fade-in">
       <div className="w-full max-w-sm flex flex-col items-center space-y-7">
         {/* Scaled Up & Centered Brand Logos */}
         <div className="relative p-4 px-6 rounded-3xl bg-white/90 shadow-2xl border border-orange-100/80 flex items-center justify-center gap-4">
@@ -46,20 +28,41 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ phase }) => {
           />
         </div>
 
-        {/* Live Animated Progress Percentage Counter */}
-        <div className="space-y-2 w-full">
-          <div className="text-4xl font-black tracking-tight text-slate-900 font-playful">
-            {displayPercent}%
-          </div>
-
-          {/* Smooth Progressive Progress Bar */}
-          <div className="w-full h-3.5 bg-white/80 rounded-full overflow-hidden p-0.5 shadow-inner border border-orange-100">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-[#e65c40] via-[#ff7854] to-[#ffea00] transition-all duration-300 ease-out shadow-[0_0_12px_rgba(230,92,64,0.5)]"
-              style={{ width: `${displayPercent}%` }}
+        {/* Animated Progress Circle */}
+        <div className="relative w-20 h-20 flex items-center justify-center">
+          <svg className="w-full h-full animate-spin" viewBox="0 0 50 50">
+            <defs>
+              <linearGradient id="spinner-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#e65c40" />
+                <stop offset="50%" stopColor="#ff7854" />
+                <stop offset="100%" stopColor="#ffea00" />
+              </linearGradient>
+            </defs>
+            <circle
+              cx="25"
+              cy="25"
+              r="20"
+              fill="none"
+              stroke="#fceae5"
+              strokeWidth="4.5"
             />
-          </div>
+            <circle
+              cx="25"
+              cy="25"
+              r="20"
+              fill="none"
+              stroke="url(#spinner-gradient)"
+              strokeWidth="4.5"
+              strokeDasharray="85 120"
+              strokeLinecap="round"
+            />
+          </svg>
         </div>
+
+        {/* Status Text */}
+        <p className="text-lg font-bold text-slate-800 tracking-tight font-playful animate-pulse">
+          Your image is generating, please wait...
+        </p>
       </div>
     </div>
   );

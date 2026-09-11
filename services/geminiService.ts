@@ -83,13 +83,13 @@ export const ANIME_STYLES: AnimeStylePreset[] = [
     emoji: '✨',
     vibeTag: 'SIGNATURE 🌟',
     tagline: 'Wonder Cartoon Style',
-    description: 'Clean cartoon animation style, original background and dress preserved with ice cream treat.',
+    description: 'Clean cartoon animation style with superhero comic background and ice cream treat.',
     icon: 'fa-wand-magic-sparkles',
     accentBg: 'bg-pink-500/15',
     accentBorder: 'border-[#ff2e93]',
     badgeColor: 'bg-[#ff2e93] text-white',
     promptDescription:
-      'Clean 2D cartoon animation artwork preserving facial features, natural proportions, original background, and original dress.',
+      'Clean 2D cartoon animation artwork preserving facial features, natural proportions, superhero comic style background, and original dress.',
   },
 ];
 
@@ -127,6 +127,11 @@ export async function transformImageToAnime(
   // MASTER PROMPT: GUARANTEED 2D ANIME ILLUSTRATION TRANSFORMATION WITH PERFECT LIKENESS
   const generationPrompt = `Transform the person in Image 1 into a STUNNING HIGH-QUALITY 2D ANIME / CARTOON CHARACTER ILLUSTRATION:
 
+CRITICAL MANDATORY ANATOMY CONTROL:
+- STRICTLY 2 HANDS TOTAL (EXACTLY ONE LEFT HAND AND ONE RIGHT HAND). ABSOLUTELY ZERO 3RD HAND!
+- If the original person in Image 1 has crossed arms or resting hands, REPLACE one of those hands to hold the "${selectedTreat.name}" ice cream bar naturally on its wooden stick. DO NOT keep both original hands AND add a 3rd hand!
+- THERE MUST BE EXACTLY 2 HANDS VISIBLE IN THE ENTIRE ILLUSTRATION. NO EXTRA HANDS, NO DUPLICATE ARMS.
+
 1. GUARANTEED 2D ANIME / CARTOON REDRAW (MUST NOT LOOK LIKE A REAL PHOTO):
 - COMPLETE ARTISTIC REDRAW: You MUST completely redraw the person's face, skin, eyes, hair, and clothing into a stylized 2D anime/manga digital illustration with clean drawn line art, smooth vibrant anime cel-shading, and bright anime highlights!
 - NO REALISTIC SKIN TEXTURES: The face and skin must NOT be left as a realistic photo. Render every inch of skin, hair, eyes, and clothing in 2D animated cartoon art style.
@@ -135,17 +140,18 @@ export async function transformImageToAnime(
 - 100% IDENTICAL FACIAL IDENTITY: Preserve the person's EXACT real face shape, exact eye shape & eye color, exact nose structure, lip shape, cheekbones, smile line, facial proportions, skin tone, beard/facial hair, and beauty marks/moles.
 - DO NOT CHANGE THE FACE TO A GENERIC ANIME FACE: Anyone looking at the portrait MUST instantly recognize the exact individual from Image 1. Maintain their real facial expression, personality, and identity completely!
 - EXACT HAIRSTYLE & OUTFIT: Keep their identical haircut, hair texture, and exact clothing pattern/colors from Image 1.
-- EXACTLY TWO ARMS & TWO HANDS TOTAL: The character has ONLY TWO arms and TWO hands. Modify ONE hand from Image 1 to hold the "${selectedTreat.name}" ice cream bar naturally on its wooden stick near their chest/shoulder. Ensure hand and fingers are drawn in clean 2D anime art style.
-- NO EXTRA HANDS / NO DUPLICATE ARMS under any circumstances.
+- EXACTLY TWO ARMS & TWO HANDS TOTAL: The character has ONLY TWO arms and TWO hands. One hand holds the "${selectedTreat.name}" ice cream bar naturally on its wooden stick near their chest/shoulder, while the other hand rests naturally. Ensure hands and fingers are drawn with normal 5 fingers per hand in clean 2D anime art style.
+- NO EXTRA HANDS / NO 3RD HAND / NO DUPLICATE ARMS under any circumstances.
+- Do not add beard to Girls.
 
-3. CLEAN VIBRANT COLORFUL ANIME GRADIENT BACKGROUND:
-- Replace the background behind the character with a clean, smooth, colorful 2D anime backdrop color-matched to "${selectedTreat.name}" (${selectedTreat.flavor}):
-  * Use radiant, vibrant anime color gradients matching the signature colors of "${selectedTreat.name}"!
-  * Add soft glowing anime bokeh lights and smooth color aura gradients in matching treat colors.
+3. SUPERHERO COMIC STYLE BACKGROUND:
+- Replace the background behind the character with a dynamic, energetic SUPERHERO COMIC BOOK STYLE backdrop color-matched to "${selectedTreat.name}" (${selectedTreat.flavor}):
+  * Incorporate dynamic superhero comic elements such as high-energy speed lines, action rays, halftone dot pop-art patterns, and comic book burst rays behind the character!
+  * Use radiant, vibrant comic book color gradients color-matched to signature colors of "${selectedTreat.name}"!
   * DO NOT ADD floating food items, candies, toffee, or ice crystals.
 
 4. STRICT 100% FULL-BLEED BACKGROUND FILL (ZERO WHITE BORDERS):
-- 100% FULL BLEED ARTWORK: The colorful 2D anime background MUST fill 100% of the canvas edge-to-edge on all 4 sides.
+- 100% FULL BLEED ARTWORK: The superhero comic style background MUST fill 100% of the canvas edge-to-edge on all 4 sides.
 - ABSOLUTELY ZERO WHITE BORDERS / ZERO WHITE MARGINS / ZERO WHITE PADDING: Do NOT add any white box, white border frame, polaroid border, or white background bars around the character or image under any circumstances!
 - The background artwork and color gradient MUST extend all the way to the very edges of the 1:1 image.
 
@@ -214,7 +220,7 @@ ${customInstruction}${treatImageReferenceNotice}`;
 
   throw new Error(
     lastError?.message ||
-      'Transformation failed. Please try again with a clear photo!'
+    'Transformation failed. Please try again with a clear photo!'
   );
 }
 

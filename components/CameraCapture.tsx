@@ -21,7 +21,7 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture, onClose
   const [isFlashActive, setIsFlashActive] = useState(false);
   const [recSeconds, setRecSeconds] = useState(1);
 
-  // Timer counter for retro REC display
+  // Timer counter for REC display
   useEffect(() => {
     const t = setInterval(() => setRecSeconds((s) => s + 1), 1000);
     return () => clearInterval(t);
@@ -177,41 +177,29 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture, onClose
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black flex flex-col justify-between select-none animate-fade-in">
-      {/* Top Camcorder Info Header */}
-      <div className="p-4 pt-6 flex items-center justify-between z-30 bg-gradient-to-b from-black/80 to-transparent">
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
-          <span className="font-mono text-xs font-bold text-red-400 tracking-wider">
-            REC ● {formatRecTime(recSeconds)}
-          </span>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-yellow-400 text-black font-mono ml-2">
-            HD 60FPS
-          </span>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={onClose}
-            className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md text-white flex items-center justify-center text-lg active:scale-95 transition-transform"
-          >
-            ✕
-          </button>
-        </div>
+    <div className="fixed inset-0 z-50 bg-slate-950 flex flex-col justify-between select-none animate-fade-in">
+      {/* Top Header */}
+      <div className="p-4 pt-6 flex items-center justify-end z-30 bg-gradient-to-b from-slate-950/90 to-transparent">
+        <button
+          onClick={onClose}
+          className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md text-white flex items-center justify-center text-lg active:scale-95 transition-transform"
+        >
+          ✕
+        </button>
       </div>
 
       {/* Viewfinder Main View */}
-      <div className="relative flex-1 bg-black overflow-hidden flex items-center justify-center">
+      <div className="relative flex-1 bg-slate-950 overflow-hidden flex items-center justify-center">
         {isFlashActive && (
           <div className="absolute inset-0 bg-white z-40 animate-out fade-out duration-200" />
         )}
 
         {countdown !== null && (
-          <div className="absolute inset-0 z-30 bg-black/50 flex flex-col items-center justify-center">
-            <span className="text-8xl font-black text-[#ccff00] animate-bounce drop-shadow-[0_0_20px_#ccff00]">
+          <div className="absolute inset-0 z-30 bg-slate-950/60 backdrop-blur-sm flex flex-col items-center justify-center">
+            <span className="text-8xl font-black font-playful text-[#ffea00] animate-bounce drop-shadow-[0_0_25px_rgba(255,234,0,0.8)]">
               {countdown}
             </span>
-            <span className="text-sm font-bold text-white uppercase tracking-widest mt-2">
+            <span className="text-sm font-black font-playful text-white uppercase tracking-widest mt-2 drop-shadow-md">
               STRIKE A POSE! 📸
             </span>
           </div>
@@ -220,10 +208,10 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture, onClose
         {cameraError ? (
           <div className="p-6 text-center max-w-xs space-y-4">
             <div className="text-4xl">⚠️</div>
-            <p className="text-red-400 font-bold text-sm">{cameraError}</p>
+            <p className="text-rose-400 font-bold text-sm">{cameraError}</p>
             <button
               onClick={startCamera}
-              className="px-5 py-2.5 rounded-full bg-[#ccff00] text-black font-extrabold text-xs brutal-shadow-sm active:translate-y-0.5"
+              className="px-5 py-3 rounded-2xl bg-gradient-to-r from-[#8c1d6b] to-[#ff2975] text-white font-black text-xs uppercase tracking-wider shadow-lg active:scale-95"
             >
               RETRY CAMERA 🔄
             </button>
@@ -235,9 +223,10 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture, onClose
               alt="Selfie"
               className="w-full h-full object-cover"
             />
-            {/* Gen Z Sticker overlay */}
-            <div className="absolute top-6 left-6 rotate-[-6deg] bg-[#ff2e93] text-white font-black text-xs px-3 py-1.5 rounded-lg brutal-shadow border border-black">
-              MAIN CHARACTER ENERGY 🔥
+            {/* Brand Theme Badge Overlay */}
+            <div className="absolute top-6 left-6 rotate-[-4deg] bg-gradient-to-r from-[#8c1d6b] to-[#ff2975] text-white font-black font-playful text-xs px-4 py-2 rounded-2xl shadow-xl border border-white/30 flex items-center gap-1.5">
+              <span>HERO SELFIE</span>
+              <span>✨</span>
             </div>
           </div>
         ) : (
@@ -252,21 +241,21 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture, onClose
               }`}
             />
 
-            {/* Target Face Brackets & Focus Reticle */}
+            {/* Wonder Face Framing Bracket */}
             <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center">
-              <div className="w-64 h-80 border-2 border-dashed border-[#ccff00]/60 rounded-[40px] flex flex-col items-center justify-between p-4 shadow-[0_0_25px_rgba(204,255,0,0.2)]">
-                <div className="flex justify-between w-full text-[10px] font-mono text-[#ccff00] font-bold">
-                  <span>[AF-LOCK]</span>
-                  <span>FACE_DETECT: 99%</span>
+              <div className="w-64 h-80 border-2 border-dashed border-[#ffea00]/80 rounded-[40px] flex flex-col items-center justify-between p-4 shadow-[0_0_30px_rgba(255,234,0,0.3)]">
+                <div className="flex justify-between w-full text-[10px] font-mono text-[#ffea00] font-bold">
+                  <span>[HERO-CAM]</span>
+                  <span>READY ⚡</span>
                 </div>
-                <div className="text-center bg-black/60 px-3 py-1 rounded-full border border-white/20 backdrop-blur-md">
-                  <span className="text-[11px] font-bold text-white tracking-wide">
-                    CENTER YOUR VIBE ✨
+                <div className="text-center bg-[#8c1d6b]/80 px-4 py-1.5 rounded-full border border-white/40 backdrop-blur-md shadow-lg">
+                  <span className="text-xs font-black font-playful text-white tracking-wide">
+                    CENTER YOUR SELFIE ✨
                   </span>
                 </div>
-                <div className="flex justify-between w-full text-[10px] font-mono text-[#ccff00] font-bold">
-                  <span>ISO 400</span>
-                  <span>f/1.8</span>
+                <div className="flex justify-between w-full text-[10px] font-mono text-[#ffea00] font-bold">
+                  <span>WONDER VIBE</span>
+                  <span>100%</span>
                 </div>
               </div>
             </div>
@@ -277,18 +266,18 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture, onClose
       </div>
 
       {/* Bottom Shutter Controls */}
-      <div className="p-6 pb-10 bg-gradient-to-t from-black via-black/90 to-transparent z-30 flex flex-col gap-4">
+      <div className="p-6 pb-10 bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent z-30 flex flex-col gap-4">
         {capturedPreview ? (
           <div className="flex gap-3">
             <button
               onClick={handleRetake}
-              className="flex-1 py-4 rounded-2xl bg-[#1e2030] text-white font-black text-sm border-2 border-white/20 brutal-shadow active:translate-y-0.5 flex items-center justify-center gap-2"
+              className="flex-1 py-4 rounded-2xl bg-white/15 text-white font-black text-sm border border-white/20 hover:bg-white/25 active:scale-95 transition-all flex items-center justify-center gap-2"
             >
               <span>🔄 RETAKE</span>
             </button>
             <button
               onClick={handleConfirm}
-              className="flex-1 py-4 rounded-2xl bg-gradient-to-r from-[#ff2e93] to-[#ccff00] text-black font-black text-sm border-2 border-black brutal-shadow active:translate-y-0.5 flex items-center justify-center gap-2 shadow-[0_0_20px_#ff2e93]"
+              className="flex-1 py-4 rounded-2xl bg-gradient-to-r from-[#8c1d6b] via-[#a3227d] to-[#ff2975] hover:brightness-105 text-white font-black text-sm uppercase tracking-wider shadow-[0_10px_25px_-5px_rgba(140,29,107,0.6)] active:scale-95 transition-all flex items-center justify-center gap-2"
             >
               <span>✨ USE SELFIE</span>
             </button>
@@ -301,24 +290,24 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture, onClose
               onClick={() => setUseCountdown(!useCountdown)}
               className={`w-12 h-12 rounded-2xl font-bold flex flex-col items-center justify-center transition-all ${
                 useCountdown
-                  ? 'bg-[#ccff00] text-black border-2 border-black brutal-shadow-sm'
-                  : 'bg-white/10 text-white hover:bg-white/20'
+                  ? 'bg-[#ffea00] text-slate-900 shadow-[0_0_15px_rgba(255,234,0,0.5)] font-black'
+                  : 'bg-white/15 text-white hover:bg-white/25 border border-white/20'
               }`}
               title="3-Second Timer"
             >
-              <i className="fas fa-stopwatch text-sm" />
-              <span className="text-[9px] font-mono mt-0.5">3s</span>
+              <span className="text-xs">⏱️</span>
+              <span className="text-[9px] font-mono mt-0.5 font-bold">3s</span>
             </button>
 
-            {/* Giant Tactile Shutter Button */}
+            {/* Giant Brand Shutter Button */}
             <button
               type="button"
               onClick={handleCaptureClick}
               disabled={!!cameraError || countdown !== null}
-              className="w-20 h-20 rounded-full border-4 border-[#ccff00] p-1.5 flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-[0_0_25px_#ccff00] group"
+              className="w-20 h-20 rounded-full border-4 border-[#ffea00] p-1.5 flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(255,234,0,0.5)] group"
             >
-              <div className="w-full h-full rounded-full bg-white group-hover:bg-[#ff2e93] transition-colors flex items-center justify-center">
-                <i className="fas fa-camera text-black group-hover:text-white text-xl" />
+              <div className="w-full h-full rounded-full bg-gradient-to-tr from-[#8c1d6b] to-[#ff2975] group-hover:brightness-110 transition-colors flex items-center justify-center text-white shadow-inner">
+                <span className="text-2xl">📸</span>
               </div>
             </button>
 
@@ -327,11 +316,11 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture, onClose
               <button
                 type="button"
                 onClick={toggleCameraFacing}
-                className="w-12 h-12 rounded-2xl bg-white/10 text-white hover:bg-white/20 flex flex-col items-center justify-center active:scale-95"
+                className="w-12 h-12 rounded-2xl bg-white/15 text-white hover:bg-white/25 border border-white/20 flex flex-col items-center justify-center active:scale-95 transition-all"
                 title="Flip Camera"
               >
-                <i className="fas fa-camera-rotate text-sm" />
-                <span className="text-[9px] font-mono mt-0.5">FLIP</span>
+                <span className="text-xs">🔄</span>
+                <span className="text-[9px] font-mono mt-0.5 font-bold">FLIP</span>
               </button>
             ) : (
               <div className="w-12" />
