@@ -13,36 +13,27 @@ Route::get('/', function () {
             'exception' => new \Exception(\App\Models\Setting::getMaintenanceMessage())
         ], 503);
     }
-    return redirect()->route('admin.dashboard');
+    return redirect()->route('admin.settings.index');
 });
 
-// Secret IT Admin Portal Entrypoint
-Route::get('/EH-PORTAL-IT-ADMIN', function () {
-    if (auth()->check()) {
-        return redirect()->route('admin.settings.index');
-    }
-    session(['url.intended' => route('admin.settings.index')]);
-    return redirect()->route('admin.login');
-})->name('it-admin.portal');
+// Primary IT Admin Authentication Routes
+Route::get('/EH-Hero/EH-PORTAL-IT-ADMIN/login', [AuthController::class, 'showLogin'])->name('admin.login');
+Route::post('/EH-Hero/EH-PORTAL-IT-ADMIN/login', [AuthController::class, 'login'])->name('admin.login.submit');
+Route::post('/EH-Hero/EH-PORTAL-IT-ADMIN/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
-Route::get('/EH-Hero/EH-PORTAL-IT-ADMIN', function () {
-    if (auth()->check()) {
-        return redirect()->route('admin.settings.index');
-    }
-    session(['url.intended' => route('admin.settings.index')]);
-    return redirect()->route('admin.login');
-})->name('it-admin.portal.alias');
+// Aliases for login
+Route::get('/EH-PORTAL-IT-ADMIN/login', fn () => redirect()->route('admin.login'));
+Route::get('/login', fn () => redirect()->route('admin.login'));
 
-// Admin Authentication Routes
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::get('/admin/login', [AuthController::class, 'showLogin'])->name('admin.login');
-Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login.submit');
+// Protected IT Admin Routes under prefix: EH-Hero/EH-PORTAL-IT-ADMIN
+Route::middleware('auth')->prefix('EH-Hero/EH-PORTAL-IT-ADMIN')->name('admin.')->group(function () {
+    // Primary Admin Settings & Maintenance route (directly on /EH-Hero/EH-PORTAL-IT-ADMIN)
+    Route::get('/', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/', [SettingController::class, 'update'])->name('settings.update');
+    Route::post('/toggle-maintenance', [SettingController::class, 'toggleMaintenance'])->name('settings.toggle-maintenance');
 
-// Protected Admin Routes
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Users Management
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -55,12 +46,6 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/generations/{id}/download', [GenerationController::class, 'download'])->name('generations.download');
     Route::delete('/generations/{id}', [GenerationController::class, 'destroy'])->name('generations.destroy');
 
-    // Settings Management
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
-    Route::post('/settings/toggle-maintenance', [SettingController::class, 'toggleMaintenance'])->name('settings.toggle-maintenance');
-
-
     // Error & Maintenance Page Previews
     Route::get('/preview/404', function () {
         return response()->view('errors.404', [], 404);
@@ -70,6 +55,20 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     })->name('preview.503');
 });
 
+// Aliases without /EH-Hero prefix
+Route::get('/EH-PORTAL-IT-ADMIN', fn () => redirect()->route('admin.settings.index'));
+Route::get('/EH-PORTAL-IT-ADMIN/{any}', function ($any) {
+    return redirect('/EH-Hero/EH-PORTAL-IT-ADMIN/' . $any);
+})->where('any', '.*');
+
+// Legacy admin route redirects (never use /admin/settings)
+Route::get('/admin', fn () => redirect()->route('admin.settings.index'));
+Route::get('/admin/settings', fn () => redirect()->route('admin.settings.index'));
+Route::get('/admin/login', fn () => redirect()->route('admin.login'));
+Route::get('/admin/{any}', function ($any) {
+    return redirect('/EH-Hero/EH-PORTAL-IT-ADMIN/' . $any);
+})->where('any', '.*');
+
 // Public preview routes
 Route::get('/preview/404', function () {
     return response()->view('errors.404', [], 404);
@@ -77,4 +76,3 @@ Route::get('/preview/404', function () {
 Route::get('/preview/503', function () {
     return response()->view('errors.503', ['exception' => new \Exception('Our team is fine-tuning the Wonder Anime AI servers to serve up even cooler transformations. We will be back online shortly!')], 503);
 });
-

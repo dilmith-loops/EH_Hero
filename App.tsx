@@ -64,12 +64,12 @@ const App: React.FC = () => {
       const path = window.location.pathname;
 
       if (
-        path.includes('EH-PORTAL-IT-ADMIN') ||
-        hash === '#eh-portal-it-admin' ||
-        params.get('page')?.toUpperCase() === 'EH-PORTAL-IT-ADMIN' ||
-        params.get('admin') !== null
+        (!path.includes('EH-PORTAL-IT-ADMIN')) &&
+        (hash === '#eh-portal-it-admin' ||
+         params.get('page')?.toUpperCase() === 'EH-PORTAL-IT-ADMIN' ||
+         params.get('admin') !== null)
       ) {
-        window.location.href = '/admin/settings';
+        window.location.href = '/EH-Hero/EH-PORTAL-IT-ADMIN';
         return;
       }
 
