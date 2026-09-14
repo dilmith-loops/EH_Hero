@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Dashboard') | Elephant House Wonder Hero</title>
+    <!-- Elephant House Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('eh-logo.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('eh-logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('eh-logo.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -40,14 +44,14 @@
         <aside class="w-full lg:w-72 lg:h-screen lg:sticky lg:top-0 bg-slate-900 text-white flex flex-col justify-between shrink-0 shadow-xl border-r border-slate-800 z-40 overflow-y-auto">
             <div>
                 <!-- Brand Header -->
-                <div class="p-6 border-b border-slate-800/80 flex items-center justify-between">
+                <div class="p-5 border-b border-slate-800/80 flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-800 flex items-center justify-center text-xl font-black shadow-lg shadow-brand-500/30">
-                            🍦
+                        <div class="w-12 h-12 rounded-2xl bg-white/95 p-1 flex items-center justify-center shrink-0 shadow-lg shadow-black/20 border border-white/20">
+                            <img src="{{ asset('eh-logo.png') }}" alt="Elephant House Logo" class="w-full h-full object-contain">
                         </div>
                         <div>
-                            <h1 class="text-base font-extrabold tracking-tight text-white leading-tight">EH Wonder Hero</h1>
-                            <p class="text-xs font-semibold text-brand-500 uppercase tracking-wider">Admin Portal</p>
+                            <h1 class="text-sm font-black tracking-tight text-white leading-tight">Elephant House</h1>
+                            <p class="text-[10px] font-extrabold text-brand-500 uppercase tracking-wider">IT Admin Portal</p>
                         </div>
                     </div>
                 </div>

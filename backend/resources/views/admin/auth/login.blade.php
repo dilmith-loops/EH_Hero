@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login | Elephant House Wonder Hero</title>
+    <!-- Elephant House Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('eh-logo.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('eh-logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('eh-logo.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -32,11 +36,11 @@
     <div class="w-full max-w-md">
         <!-- Brand Header -->
         <div class="text-center mb-8">
-            <div class="w-16 h-16 rounded-3xl bg-gradient-to-tr from-brand-500 to-brand-800 mx-auto flex items-center justify-center text-3xl shadow-xl shadow-brand-500/20 mb-4 ring-4 ring-white/10">
-                🍦
+            <div class="w-20 h-20 rounded-3xl bg-white/95 p-2 mx-auto flex items-center justify-center shadow-2xl shadow-brand-500/20 mb-4 ring-4 ring-white/10 border border-white/20">
+                <img src="{{ asset('eh-logo.png') }}" alt="Elephant House" class="w-full h-full object-contain">
             </div>
-            <h1 class="text-2xl font-black text-white tracking-tight">Elephant House Wonder</h1>
-            <p class="text-sm font-semibold text-brand-500 mt-1 uppercase tracking-wider">Hero Admin Management Portal</p>
+            <h1 class="text-2xl font-black text-white tracking-tight">Elephant House</h1>
+            <p class="text-xs font-extrabold text-brand-500 mt-1 uppercase tracking-widest">IT Admin Management Portal</p>
         </div>
 
         <!-- Login Card -->
