@@ -34,10 +34,10 @@
         body { font-family: 'Outfit', sans-serif; }
     </style>
 </head>
-<body class="h-full antialiased text-slate-800">
-    <div class="min-h-full flex flex-col lg:flex-row">
-        <!-- Sidebar -->
-        <aside class="w-full lg:w-72 bg-slate-900 text-white flex flex-col justify-between shrink-0 shadow-xl border-r border-slate-800">
+<body class="h-full antialiased text-slate-800 bg-slate-50">
+    <div class="min-h-screen lg:h-screen lg:overflow-hidden flex flex-col lg:flex-row">
+        <!-- Sidebar: Fixed / Sticky on desktop so it never scrolls away -->
+        <aside class="w-full lg:w-72 lg:h-screen lg:sticky lg:top-0 bg-slate-900 text-white flex flex-col justify-between shrink-0 shadow-xl border-r border-slate-800 z-40 overflow-y-auto">
             <div>
                 <!-- Brand Header -->
                 <div class="p-6 border-b border-slate-800/80 flex items-center justify-between">
@@ -119,7 +119,7 @@
         </aside>
 
         <!-- Main Content Area -->
-        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <main class="flex-1 flex flex-col min-w-0 lg:h-screen lg:overflow-y-auto">
             <!-- Top Bar -->
             <header class="bg-white border-b border-slate-200/80 px-6 py-4 flex items-center justify-between sticky top-0 z-30 shadow-xs">
                 <div>
