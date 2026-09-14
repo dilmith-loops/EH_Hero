@@ -26,7 +26,39 @@ export interface SavedGenerationResponse {
   created_at: string;
 }
 
+export interface LimitStatusResponse {
+  limit_enabled: boolean;
+  can_generate: boolean;
+  max_limit: number;
+  current_count: number;
+  remaining: number | null;
+  period: string;
+  message: string | null;
+}
+
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+
+/**
+ * Check if the current device/IP has reached the generation limit.
+ */
+export async function checkGenerationLimit(): Promise<LimitStatusResponse> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/generations/limit-status`);
+    if (!response.ok) throw new Error('Limit status fetch failed');
+    return await response.json();
+  } catch (error) {
+    // If backend check fails, fail-open so the participant is not blocked
+    return {
+      limit_enabled: false,
+      can_generate: true,
+      max_limit: 999,
+      current_count: 0,
+      remaining: null,
+      period: 'lifetime',
+      message: null,
+    };
+  }
+}
 
 /**
  * Register or look up the participant on the Laravel MySQL backend.

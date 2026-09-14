@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\AppUser;
 use App\Models\Generation;
+use App\Models\Setting;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -13,10 +15,65 @@ use Illuminate\Support\Str;
 class GenerationController extends Controller
 {
     /**
+     * Check limit status for the requesting IP address.
+     */
+    public function checkLimit(Request $request): JsonResponse
+    {
+        $clientIp = $request->ip();
+        $limitEnabled = Setting::isLimitEnabled();
+        $maxLimit = Setting::getMaxGenerationsPerIp();
+        $period = Setting::getLimitPeriod();
+
+        $query = Generation::where('ip_address', $clientIp);
+        if ($period === 'daily') {
+            $query->whereDate('created_at', Carbon::today());
+        }
+
+        $currentCount = $query->count();
+        $remaining = max(0, $maxLimit - $currentCount);
+        $canGenerate = !$limitEnabled || ($currentCount < $maxLimit);
+
+        return response()->json([
+            'limit_enabled' => $limitEnabled,
+            'can_generate' => $canGenerate,
+            'max_limit' => $maxLimit,
+            'current_count' => $currentCount,
+            'remaining' => $limitEnabled ? $remaining : null,
+            'period' => $period,
+            'message' => !$canGenerate ? Setting::getLimitMessage() : null,
+        ]);
+    }
+
+    /**
      * Store a new image generation and save original & generated images.
      */
     public function store(Request $request): JsonResponse
     {
+        $clientIp = $request->ip();
+
+        // Enforce IP generation limit if enabled
+        if (Setting::isLimitEnabled()) {
+            $maxLimit = Setting::getMaxGenerationsPerIp();
+            $period = Setting::getLimitPeriod();
+
+            $query = Generation::where('ip_address', $clientIp);
+            if ($period === 'daily') {
+                $query->whereDate('created_at', Carbon::today());
+            }
+
+            $currentCount = $query->count();
+            if ($currentCount >= $maxLimit) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'limit_reached',
+                    'message' => Setting::getLimitMessage(),
+                    'current_count' => $currentCount,
+                    'max_limit' => $maxLimit,
+                    'period' => $period,
+                ], 429);
+            }
+        }
+
         $validated = $request->validate([
             'app_user_id' => 'required|exists:app_users,id',
             'treat_id' => 'required|string|max:100',

@@ -18,7 +18,7 @@ import {
   ImageState,
   AnimeResult,
 } from './types';
-import { saveGeneratedPortrait, UserInfo } from './services/apiService';
+import { saveGeneratedPortrait, checkGenerationLimit, UserInfo } from './services/apiService';
 
 type AppStep = 'login' | 'upload' | 'result';
 
@@ -105,6 +105,14 @@ const App: React.FC = () => {
     setError(null);
 
     try {
+      // Pre-check generation limit for this device/IP
+      const limitCheck = await checkGenerationLimit();
+      if (!limitCheck.can_generate) {
+        setError(limitCheck.message || 'Generation limit reached for this device.');
+        setLoading(false);
+        return;
+      }
+
       const mimeType = photo.file?.type || 'image/jpeg';
 
       let treatBase64: string | undefined = undefined;

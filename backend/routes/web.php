@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GenerationController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,4 +32,8 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/generations', [GenerationController::class, 'index'])->name('generations.index');
     Route::get('/generations/{id}/download', [GenerationController::class, 'download'])->name('generations.download');
     Route::delete('/generations/{id}', [GenerationController::class, 'destroy'])->name('generations.destroy');
+
+    // Settings Management
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });

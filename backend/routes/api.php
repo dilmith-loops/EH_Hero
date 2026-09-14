@@ -7,5 +7,6 @@ use Illuminate\Support\Facades\Route;
 Route::post('/users', [AppUserController::class, 'store']);
 Route::get('/users/{id}', [AppUserController::class, 'show']);
 
+Route::get('/generations/limit-status', [GenerationController::class, 'checkLimit']);
 Route::post('/generations', [GenerationController::class, 'store']);
 Route::get('/generations/{id}', [GenerationController::class, 'show']);
