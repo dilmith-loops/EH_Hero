@@ -3,6 +3,7 @@
 # ==============================================================================
 
 Options -Indexes
+DirectoryIndex index.html index.php
 AddDefaultCharset UTF-8
 
 <IfModule mod_rewrite.c>
@@ -16,6 +17,7 @@ AddDefaultCharset UTF-8
     RewriteRule ^backend/(app|bootstrap|config|database|resources|routes|storage|tests) - [F,L,NC]
     RewriteRule ^(\.git|\.github|node_modules) - [F,L,NC]
     RewriteRule ^(package\.json|package-lock\.json|composer\.json|composer\.lock|vite\.config\.ts|tsconfig\.json) - [F,L,NC]
+    RewriteRule \.(tsx|ts|jsx)$ - [F,L,NC]
 
     # Handle Authorization Headers for APIs
     RewriteCond %{HTTP:Authorization} .
@@ -39,26 +41,23 @@ AddDefaultCharset UTF-8
     # --------------------------------------------------------------------------
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^(EH-Hero/)?storage/(.*)$ backend/public/storage/$2 [L]
-
     RewriteRule ^(EH-Hero/)?storage(/.*)?$ backend/public/index.php [L,QSA]
 
     # --------------------------------------------------------------------------
-    # 5. Static Assets (dist/ directory for CSS, JS, images, fonts)
+    # 5. Serve real files directly if they exist
     # --------------------------------------------------------------------------
-    # If the file exists directly in dist/
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Also check dist/ directory as fallback
     RewriteCond %{DOCUMENT_ROOT}/dist/$2 -f
     RewriteRule ^(EH-Hero/)?(.*)$ dist/$2 [L]
 
-    # Match static asset patterns and serve from dist
-    RewriteCond %{REQUEST_URI} (assets/.*|.*\.(?:css|js|png|jpe?g|gif|svg|ico|webp|woff2?|ttf|eot))$ [NC]
-    RewriteRule ^(EH-Hero/)?(.*)$ dist/$2 [L]
-
     # --------------------------------------------------------------------------
-    # 6. Single Page App (SPA) Fallback -> dist/index.html
+    # 6. Single Page App (SPA) Fallback -> index.html
     # --------------------------------------------------------------------------
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(EH-Hero(/.*)?)?$ dist/index.html [L]
+    RewriteRule ^(EH-Hero(/.*)?)?$ index.html [L]
 </IfModule>
 
 # ------------------------------------------------------------------------------
