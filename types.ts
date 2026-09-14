@@ -62,3 +62,13 @@ export interface AnimeResult {
   customPrompt?: string;
   timestamp: number;
 }
+
+export type GarmentType = 'upper' | 'lower' | 'overall';
+
+export interface ClothingAsset {
+  id: string;
+  name: string;
+  category: 'upper' | 'lower' | 'overall';
+  imageUrl: string;
+}
+

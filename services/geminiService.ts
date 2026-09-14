@@ -7,6 +7,8 @@ import {
   WonderTreat,
 } from '../types';
 
+export type GarmentType = 'upper' | 'lower' | 'overall';
+
 export const WONDER_TREATS: WonderTreat[] = [
   {
     id: 'pinkybear',
