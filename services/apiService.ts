@@ -125,6 +125,22 @@ export async function registerParticipant(name: string, phone?: string): Promise
       body: JSON.stringify(payload),
     });
 
+    if (response.status === 429) {
+      const errData = await response.json().catch(() => ({}));
+      const err: any = new Error(errData.message || 'You have reached the maximum allowed image generations for this device.');
+      err.isLimitReached = true;
+      err.status = 429;
+      throw err;
+    }
+
+    if (response.status === 503) {
+      const errData = await response.json().catch(() => ({}));
+      const err: any = new Error(errData.message || 'Platform is currently under maintenance.');
+      err.isMaintenance = true;
+      err.status = 503;
+      throw err;
+    }
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -135,7 +151,10 @@ export async function registerParticipant(name: string, phone?: string): Promise
       name: data.user.name,
       phone: data.user.phone || undefined,
     };
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.isLimitReached || error?.isMaintenance || error?.status === 429 || error?.status === 503) {
+      throw error;
+    }
     console.warn('Backend user registration error (continuing in offline mode):', error);
     // Fallback if backend is unreachable so user flow is not interrupted
     return {

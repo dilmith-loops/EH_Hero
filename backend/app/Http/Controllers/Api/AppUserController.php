@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\AppUser;
+use App\Models\Generation;
+use App\Models\Setting;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -14,20 +17,42 @@ class AppUserController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        if (\App\Models\Setting::isMaintenanceEnabled()) {
+        if (Setting::isMaintenanceEnabled()) {
             return response()->json([
                 'success' => false,
                 'error' => 'maintenance_mode',
-                'message' => \App\Models\Setting::getMaintenanceMessage(),
+                'message' => Setting::getMaintenanceMessage(),
             ], 503);
+        }
+
+        $ipAddress = $request->ip();
+
+        // Check if device/IP has reached the generation limit before registration
+        if (Setting::isLimitEnabled()) {
+            $maxLimit = Setting::getMaxGenerationsPerIp();
+            $period = Setting::getLimitPeriod();
+
+            $query = Generation::where('ip_address', $ipAddress);
+            if ($period === 'daily') {
+                $query->whereDate('created_at', Carbon::today());
+            }
+
+            $currentCount = $query->count();
+            if ($currentCount >= $maxLimit) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'limit_reached',
+                    'message' => Setting::getLimitMessage(),
+                    'current_count' => $currentCount,
+                    'max_limit' => $maxLimit,
+                ], 429);
+            }
         }
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:30',
         ]);
-
-        $ipAddress = $request->ip();
 
         if (!empty($validated['phone'])) {
             $phone = trim($validated['phone']);
