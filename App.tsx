@@ -75,15 +75,29 @@ const App: React.FC = () => {
 
       if (hash === '#maintenance' || params.get('page') === 'maintenance') {
         setCurrentStep('maintenance');
-      } else if (hash === '#404' || hash === '#notfound' || hash === '#not-found' || params.get('page') === '404') {
+        return;
+      }
+
+      if (hash === '#404' || hash === '#notfound' || hash === '#not-found' || params.get('page') === '404') {
         setCurrentStep('not-found');
+        return;
+      }
+
+      // Check if pathname is an unknown/not found route
+      const cleanPath = path.replace(/\/+$/, '');
+      const cleanBase = baseUrl.replace(/\/+$/, '');
+      const isHome = cleanPath === cleanBase || cleanPath === `${cleanBase}/index.html`;
+
+      if (!isHome && !path.includes('EH-PORTAL-IT-ADMIN')) {
+        setCurrentStep('not-found');
+        return;
       }
     };
 
     handleRoute();
     window.addEventListener('hashchange', handleRoute);
     return () => window.removeEventListener('hashchange', handleRoute);
-  }, []);
+  }, [baseUrl]);
 
   useEffect(() => {
     const verifySystemStatus = async () => {
@@ -102,7 +116,13 @@ const App: React.FC = () => {
 
   const handleGoHome = () => {
     window.location.hash = '';
-    setCurrentStep('login');
+    const cleanPath = window.location.pathname.replace(/\/+$/, '');
+    const cleanBase = baseUrl.replace(/\/+$/, '');
+    if (cleanPath !== cleanBase && cleanPath !== `${cleanBase}/index.html`) {
+      window.location.href = baseUrl;
+    } else {
+      setCurrentStep('login');
+    }
   };
 
   const handleMaintenanceRefresh = async () => {

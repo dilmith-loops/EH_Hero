@@ -61,12 +61,9 @@ Route::get('/EH-PORTAL-IT-ADMIN/{any}', function ($any) {
     return redirect('/EH-Hero/EH-PORTAL-IT-ADMIN/' . $any);
 })->where('any', '.*');
 
-// Legacy admin route redirects (never use /admin/settings)
-Route::get('/admin', fn () => redirect()->route('admin.settings.index'));
-Route::get('/admin/settings', fn () => redirect()->route('admin.settings.index'));
-Route::get('/admin/login', fn () => redirect()->route('admin.login'));
-Route::get('/admin/{any}', function ($any) {
-    return redirect('/EH-Hero/EH-PORTAL-IT-ADMIN/' . $any);
+// Legacy admin routes return 404 to protect secret portal
+Route::any('/admin{any}', function () {
+    return response()->view('errors.404', [], 404);
 })->where('any', '.*');
 
 // Public preview routes
@@ -75,4 +72,9 @@ Route::get('/preview/404', function () {
 });
 Route::get('/preview/503', function () {
     return response()->view('errors.503', ['exception' => new \Exception('Our team is fine-tuning the Wonder Anime AI servers to serve up even cooler transformations. We will be back online shortly!')], 503);
+});
+
+// Fallback for all other undefined URLs
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
 });
