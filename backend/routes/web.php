@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GenerationController;
@@ -45,6 +46,14 @@ Route::middleware('auth')->prefix('EH-Hero/EH-PORTAL-IT-ADMIN')->name('admin.')-
     Route::get('/generations', [GenerationController::class, 'index'])->name('generations.index');
     Route::get('/generations/{id}/download', [GenerationController::class, 'download'])->name('generations.download');
     Route::delete('/generations/{id}', [GenerationController::class, 'destroy'])->name('generations.destroy');
+
+    // Admin Accounts Management
+    Route::get('/admins', [AdminUserController::class, 'index'])->name('admins.index');
+    Route::get('/admins/create', [AdminUserController::class, 'create'])->name('admins.create');
+    Route::post('/admins', [AdminUserController::class, 'store'])->name('admins.store');
+    Route::get('/admins/{admin}/edit', [AdminUserController::class, 'edit'])->name('admins.edit');
+    Route::put('/admins/{admin}', [AdminUserController::class, 'update'])->name('admins.update');
+    Route::delete('/admins/{admin}', [AdminUserController::class, 'destroy'])->name('admins.destroy');
 
     // Error & Maintenance Page Previews
     Route::get('/preview/404', function () {
