@@ -7,7 +7,6 @@ interface LoginPageProps {
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const baseUrl = import.meta.env.BASE_URL || '/';
@@ -18,18 +17,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       setError('Enter your name ✨');
       return;
     }
-    if (!phone.trim() || phone.trim().length < 8) {
-      setError('Enter a valid mobile number 📱');
-      return;
-    }
     setError('');
     setIsSubmitting(true);
     try {
-      const user = await registerParticipant(name.trim(), phone.trim());
+      const user = await registerParticipant(name.trim());
       onLogin(user);
     } catch (err) {
       console.warn('Registration failed, continuing:', err);
-      onLogin({ name: name.trim(), phone: phone.trim() });
+      onLogin({ name: name.trim() });
     } finally {
       setIsSubmitting(false);
     }
@@ -51,16 +46,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="First Name"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 text-slate-900 font-bold text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#8c1d6b] transition-all border border-slate-200 shadow-sm"
-              />
-            </div>
-
-            <div>
-              <input
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="Mobile Number"
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 text-slate-900 font-bold text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#8c1d6b] transition-all border border-slate-200 shadow-sm"
               />
             </div>

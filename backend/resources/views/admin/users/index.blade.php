@@ -70,7 +70,11 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="font-bold text-slate-700">{{ $user->phone }}</div>
+                                    @if($user->phone)
+                                        <div class="font-bold text-slate-700">{{ $user->phone }}</div>
+                                    @else
+                                        <div class="text-xs text-slate-400 font-semibold">—</div>
+                                    @endif
                                     @if($user->ip_address)
                                         <div class="text-[10px] font-mono text-slate-400 mt-0.5">IP: {{ $user->ip_address }}</div>
                                     @endif

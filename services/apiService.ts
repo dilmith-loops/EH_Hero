@@ -1,7 +1,7 @@
 export interface UserInfo {
   id?: number;
   name: string;
-  phone: string;
+  phone?: string;
 }
 
 export interface SaveGenerationPayload {
@@ -31,15 +31,20 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
 /**
  * Register or look up the participant on the Laravel MySQL backend.
  */
-export async function registerParticipant(name: string, phone: string): Promise<UserInfo> {
+export async function registerParticipant(name: string, phone?: string): Promise<UserInfo> {
   try {
+    const payload: { name: string; phone?: string | null } = { name: name.trim() };
+    if (phone && phone.trim()) {
+      payload.phone = phone.trim();
+    }
+
     const response = await fetch(`${API_BASE_URL}/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      body: JSON.stringify({ name: name.trim(), phone: phone.trim() }),
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
@@ -50,7 +55,7 @@ export async function registerParticipant(name: string, phone: string): Promise<
     return {
       id: data.user.id,
       name: data.user.name,
-      phone: data.user.phone,
+      phone: data.user.phone || undefined,
     };
   } catch (error) {
     console.warn('Backend user registration error (continuing in offline mode):', error);
@@ -58,7 +63,7 @@ export async function registerParticipant(name: string, phone: string): Promise<
     return {
       id: 1,
       name: name.trim(),
-      phone: phone.trim(),
+      phone: phone?.trim(),
     };
   }
 }

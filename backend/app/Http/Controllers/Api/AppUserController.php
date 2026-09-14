@@ -16,28 +16,37 @@ class AppUserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:30',
+            'phone' => 'nullable|string|max:30',
         ]);
 
         $ipAddress = $request->ip();
 
-        $user = AppUser::firstOrCreate(
-            ['phone' => trim($validated['phone'])],
-            [
-                'name' => trim($validated['name']),
-                'ip_address' => $ipAddress,
-            ]
-        );
+        if (!empty($validated['phone'])) {
+            $phone = trim($validated['phone']);
+            $user = AppUser::firstOrCreate(
+                ['phone' => $phone],
+                [
+                    'name' => trim($validated['name']),
+                    'ip_address' => $ipAddress,
+                ]
+            );
 
-        $updates = [];
-        if ($user->name !== trim($validated['name'])) {
-            $updates['name'] = trim($validated['name']);
-        }
-        if ($user->ip_address !== $ipAddress) {
-            $updates['ip_address'] = $ipAddress;
-        }
-        if (!empty($updates)) {
-            $user->update($updates);
+            $updates = [];
+            if ($user->name !== trim($validated['name'])) {
+                $updates['name'] = trim($validated['name']);
+            }
+            if ($user->ip_address !== $ipAddress) {
+                $updates['ip_address'] = $ipAddress;
+            }
+            if (!empty($updates)) {
+                $user->update($updates);
+            }
+        } else {
+            $user = AppUser::create([
+                'name' => trim($validated['name']),
+                'phone' => null,
+                'ip_address' => $ipAddress,
+            ]);
         }
 
         return response()->json([
