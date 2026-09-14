@@ -169,6 +169,32 @@
                     </div>
                 @endif
             </div>
+
+            <!-- Error & Maintenance Page Previews -->
+            <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs">
+                <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <span>🎨</span>
+                    <span>System Pages & Previews</span>
+                </h4>
+                <div class="space-y-2">
+                    <a href="{{ route('admin.preview.404') }}" target="_blank"
+                       class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-brand-50/50 border border-slate-200/80 hover:border-brand-200 transition-all text-xs font-bold text-slate-700 hover:text-brand-800">
+                        <span class="flex items-center gap-2">
+                            <span>🔍</span>
+                            <span>404 Not Found Page</span>
+                        </span>
+                        <span class="text-[10px] text-slate-400">Preview ↗</span>
+                    </a>
+                    <a href="{{ route('admin.preview.503') }}" target="_blank"
+                       class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-amber-50/50 border border-slate-200/80 hover:border-amber-200 transition-all text-xs font-bold text-slate-700 hover:text-amber-800">
+                        <span class="flex items-center gap-2">
+                            <span>🛠️</span>
+                            <span>503 Maintenance Page</span>
+                        </span>
+                        <span class="text-[10px] text-slate-400">Preview ↗</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

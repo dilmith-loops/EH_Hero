@@ -36,4 +36,21 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // Settings Management
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+    // Error & Maintenance Page Previews
+    Route::get('/preview/404', function () {
+        return response()->view('errors.404', [], 404);
+    })->name('preview.404');
+    Route::get('/preview/503', function () {
+        return response()->view('errors.503', ['exception' => new \Exception('Scheduled maintenance is in progress for the Wonder Hero AI engine.')], 503);
+    })->name('preview.503');
 });
+
+// Public preview routes
+Route::get('/preview/404', function () {
+    return response()->view('errors.404', [], 404);
+});
+Route::get('/preview/503', function () {
+    return response()->view('errors.503', ['exception' => new \Exception('Our team is fine-tuning the Wonder Anime AI servers to serve up even cooler transformations. We will be back online shortly!')], 503);
+});
+

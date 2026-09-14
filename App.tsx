@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LoginPage } from './components/LoginPage';
+import { MaintenancePage } from './components/MaintenancePage';
+import { NotFoundPage } from './components/NotFoundPage';
 import { ImageUploader } from './components/ImageUploader';
 import { CameraCapture } from './components/CameraCapture';
 import { WonderTreatSelector } from './components/WonderTreatSelector';
@@ -20,7 +22,7 @@ import {
 } from './types';
 import { saveGeneratedPortrait, checkGenerationLimit, UserInfo } from './services/apiService';
 
-type AppStep = 'login' | 'upload' | 'result';
+type AppStep = 'login' | 'upload' | 'result' | 'maintenance' | 'not-found';
 
 const App: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
@@ -53,6 +55,39 @@ const App: React.FC = () => {
       document.body.style.overflow = 'unset';
     };
   }, []);
+
+  useEffect(() => {
+    const handleRoute = () => {
+      const hash = window.location.hash.toLowerCase();
+      const params = new URLSearchParams(window.location.search);
+      if (hash === '#maintenance' || params.get('page') === 'maintenance') {
+        setCurrentStep('maintenance');
+      } else if (hash === '#404' || hash === '#notfound' || hash === '#not-found' || params.get('page') === '404') {
+        setCurrentStep('not-found');
+      }
+    };
+
+    handleRoute();
+    window.addEventListener('hashchange', handleRoute);
+    return () => window.removeEventListener('hashchange', handleRoute);
+  }, []);
+
+  const handleGoHome = () => {
+    window.location.hash = '';
+    setCurrentStep('login');
+  };
+
+  const handleMaintenanceRefresh = async () => {
+    try {
+      const status = await checkGenerationLimit();
+      if (status) {
+        window.location.hash = '';
+        setCurrentStep('login');
+      }
+    } catch {
+      window.location.reload();
+    }
+  };
 
   const fileToBase64 = (file: File): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -376,6 +411,16 @@ const App: React.FC = () => {
               onRetake={handleRetake}
             />
           </div>
+        )}
+
+        {/* STEP 4: MAINTENANCE PAGE */}
+        {currentStep === 'maintenance' && (
+          <MaintenancePage onRefresh={handleMaintenanceRefresh} />
+        )}
+
+        {/* STEP 5: 404 NOT FOUND PAGE */}
+        {currentStep === 'not-found' && (
+          <NotFoundPage onGoHome={handleGoHome} />
         )}
       </div>
     </div>
