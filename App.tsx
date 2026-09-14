@@ -18,11 +18,7 @@ import {
   ImageState,
   AnimeResult,
 } from './types';
-
-interface UserInfo {
-  name: string;
-  phone: string;
-}
+import { saveGeneratedPortrait, UserInfo } from './services/apiService';
 
 type AppStep = 'login' | 'upload' | 'result';
 
@@ -149,6 +145,25 @@ const App: React.FC = () => {
       setCurrentResult(newResult);
       setHistory((prev) => [newResult, ...prev]);
       setCurrentStep('result');
+
+      // Auto-save to Laravel MySQL database & storage in background
+      if (userInfo?.id) {
+        saveGeneratedPortrait({
+          app_user_id: userInfo.id,
+          treat_id: treatId,
+          treat_name: currentTreatObj.name,
+          style_id: styleId,
+          custom_prompt: customPrompt.trim() || undefined,
+          original_image: photo.preview || (photo.base64 ? `data:${mimeType};base64,${photo.base64}` : undefined),
+          generated_image: animeDataUrl,
+        }).then((saved) => {
+          if (saved) {
+            console.log('Saved generation to Elephant House backend #', saved.id);
+          }
+        }).catch((err) => {
+          console.warn('Background save generation failed:', err);
+        });
+      }
     } catch (err: any) {
       console.error('Generation error:', err);
       setError(err.message || 'Generation failed. Try again!');

@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-
-interface UserInfo {
-  name: string;
-  phone: string;
-}
+import { registerParticipant, UserInfo } from '../services/apiService';
 
 interface LoginPageProps {
   onLogin: (info: UserInfo) => void;
@@ -13,9 +9,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const baseUrl = import.meta.env.BASE_URL || '/';
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
       setError('Enter your name ✨');
@@ -26,7 +23,16 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       return;
     }
     setError('');
-    onLogin({ name: name.trim(), phone: phone.trim() });
+    setIsSubmitting(true);
+    try {
+      const user = await registerParticipant(name.trim(), phone.trim());
+      onLogin(user);
+    } catch (err) {
+      console.warn('Registration failed, continuing:', err);
+      onLogin({ name: name.trim(), phone: phone.trim() });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -68,9 +74,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             {/* Purple GET STARTED Button */}
             <button
               type="submit"
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#8c1d6b] via-[#a3227d] to-[#78165b] hover:brightness-105 text-white font-black text-xs uppercase tracking-wider shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 mt-0.5 cursor-pointer"
+              disabled={isSubmitting}
+              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#8c1d6b] via-[#a3227d] to-[#78165b] hover:brightness-105 disabled:opacity-70 text-white font-black text-xs uppercase tracking-wider shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 mt-0.5 cursor-pointer"
             >
-              <span>GET STARTED</span>
+              <span>{isSubmitting ? 'CONNECTING...' : 'GET STARTED'}</span>
             </button>
           </form>
         </div>
