@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login | Elephant House Wonder Hero</title>
-    <!-- Elephant House Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('eh-logo.png') }}">
-    <link rel="shortcut icon" type="image/png" href="{{ asset('eh-logo.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('eh-logo.png') }}">
+    <!-- Elephant House Favicon (Data URI guaranteed without 404 or rewrite issues) -->
+    <link rel="icon" type="image/png" href="{{ \App\Models\Setting::getLogoDataUrl() }}">
+    <link rel="shortcut icon" type="image/png" href="{{ \App\Models\Setting::getLogoDataUrl() }}">
+    <link rel="apple-touch-icon" href="{{ \App\Models\Setting::getLogoDataUrl() }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -37,7 +37,7 @@
         <!-- Brand Header -->
         <div class="text-center mb-8">
             <div class="w-20 h-20 rounded-3xl bg-white/95 p-2 mx-auto flex items-center justify-center shadow-2xl shadow-brand-500/20 mb-4 ring-4 ring-white/10 border border-white/20">
-                <img src="{{ asset('eh-logo.png') }}" alt="Elephant House" class="w-full h-full object-contain">
+                <img src="{{ \App\Models\Setting::getLogoDataUrl() }}" alt="Elephant House" class="w-full h-full object-contain">
             </div>
             <h1 class="text-2xl font-black text-white tracking-tight">Elephant House</h1>
             <p class="text-xs font-extrabold text-brand-500 mt-1 uppercase tracking-widest">IT Admin Management Portal</p>

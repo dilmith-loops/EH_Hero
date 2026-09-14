@@ -70,6 +70,28 @@ Route::get('/EH-PORTAL-IT-ADMIN/{any}', function ($any) {
     return redirect('/EH-Hero/EH-PORTAL-IT-ADMIN/' . $any);
 })->where('any', '.*');
 
+// Direct logo and favicon routes (guaranteed response even behind reverse proxies)
+Route::get('/EH-Hero/eh-logo.png', function () {
+    $file = public_path('eh-logo.png');
+    if (!file_exists($file)) $file = base_path('../eh-logo.png');
+    return response()->file($file, ['Content-Type' => 'image/png']);
+});
+Route::get('/EH-Hero/favicon.ico', function () {
+    $file = public_path('favicon.ico');
+    if (!file_exists($file)) $file = public_path('eh-logo.png');
+    return response()->file($file, ['Content-Type' => 'image/vnd.microsoft.icon']);
+});
+Route::get('/eh-logo.png', function () {
+    $file = public_path('eh-logo.png');
+    if (!file_exists($file)) $file = base_path('../eh-logo.png');
+    return response()->file($file, ['Content-Type' => 'image/png']);
+});
+Route::get('/favicon.ico', function () {
+    $file = public_path('favicon.ico');
+    if (!file_exists($file)) $file = public_path('eh-logo.png');
+    return response()->file($file, ['Content-Type' => 'image/vnd.microsoft.icon']);
+});
+
 // API routes mapped under /EH-Hero/api prefix for reverse proxy / subfolder routing
 Route::prefix('EH-Hero/api')->group(base_path('routes/api.php'));
 

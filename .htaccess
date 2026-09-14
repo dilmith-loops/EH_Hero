@@ -32,6 +32,7 @@ AddDefaultCharset UTF-8
     # --------------------------------------------------------------------------
     # 3. IT Admin Portal & Laravel API Routing -> backend/public/index.php
     # --------------------------------------------------------------------------
+    RewriteRule ^(EH-Hero/)?(eh-logo\.png|favicon\.ico|favicon\.png)$ backend/public/index.php [L]
     RewriteRule ^(EH-Hero/)?EH-PORTAL-IT-ADMIN(/.*)?$ backend/public/index.php [L,QSA]
     RewriteRule ^(EH-Hero/)?api(/.*)?$ backend/public/index.php [L,QSA]
     RewriteRule ^(EH-Hero/)?up$ backend/public/index.php [L,QSA]

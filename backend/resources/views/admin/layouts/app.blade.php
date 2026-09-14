@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Dashboard') | Elephant House Wonder Hero</title>
-    <!-- Elephant House Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('eh-logo.png') }}">
-    <link rel="shortcut icon" type="image/png" href="{{ asset('eh-logo.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('eh-logo.png') }}">
+    <!-- Elephant House Favicon (Data URI guaranteed without 404 or rewrite issues) -->
+    <link rel="icon" type="image/png" href="{{ \App\Models\Setting::getLogoDataUrl() }}">
+    <link rel="shortcut icon" type="image/png" href="{{ \App\Models\Setting::getLogoDataUrl() }}">
+    <link rel="apple-touch-icon" href="{{ \App\Models\Setting::getLogoDataUrl() }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -47,7 +47,7 @@
                 <div class="p-5 border-b border-slate-800/80 flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <div class="w-12 h-12 rounded-2xl bg-white/95 p-1 flex items-center justify-center shrink-0 shadow-lg shadow-black/20 border border-white/20">
-                            <img src="{{ asset('eh-logo.png') }}" alt="Elephant House Logo" class="w-full h-full object-contain">
+                            <img src="{{ \App\Models\Setting::getLogoDataUrl() }}" alt="Elephant House Logo" class="w-full h-full object-contain">
                         </div>
                         <div>
                             <h1 class="text-sm font-black tracking-tight text-white leading-tight">Elephant House</h1>

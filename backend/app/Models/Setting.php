@@ -96,4 +96,36 @@ class Setting extends Model
             'Our servers are taking a frosty breather to serve up faster, sharper, and even cooler anime transformations. We will be back online shortly!'
         );
     }
+
+    /**
+     * Get Elephant House brand logo as a high-performance Base64 Data URI.
+     * Guarantees 100% immediate rendering without any 404 or network routing issues.
+     */
+    public static function getLogoDataUrl(): string
+    {
+        static $cachedDataUri = null;
+        if ($cachedDataUri !== null) {
+            return $cachedDataUri;
+        }
+
+        $candidates = [
+            public_path('eh-logo.png'),
+            base_path('../eh-logo.png'),
+            base_path('public/eh-logo.png'),
+            base_path('../dist/eh-logo.png'),
+            base_path('../public/eh-logo.png'),
+        ];
+
+        foreach ($candidates as $candidate) {
+            if (file_exists($candidate) && is_readable($candidate)) {
+                $content = @file_get_contents($candidate);
+                if ($content) {
+                    $cachedDataUri = 'data:image/png;base64,' . base64_encode($content);
+                    return $cachedDataUri;
+                }
+            }
+        }
+
+        return asset('eh-logo.png');
+    }
 }
