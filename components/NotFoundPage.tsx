@@ -13,10 +13,8 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({ onGoHome }) => {
       <div className="absolute top-1/6 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#ff2975]/20 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-1/6 left-1/3 w-80 h-80 bg-[#8c1d6b]/25 rounded-full blur-[100px] pointer-events-none" />
 
-      {/* Decorative floating sparkles */}
-      <span className="absolute top-12 left-10 text-xl opacity-30 select-none animate-pulse">✨</span>
+      {/* Decorative floating treats */}
       <span className="absolute top-24 right-12 text-lg opacity-40 select-none animate-bounce" style={{ animationDuration: '4s' }}>🍦</span>
-      <span className="absolute bottom-20 left-16 text-lg opacity-25 select-none animate-pulse" style={{ animationDuration: '3s' }}>✨</span>
 
       {/* Main Card */}
       <div className="relative z-10 w-full max-w-md bg-white/[0.08] backdrop-blur-3xl border border-white/20 rounded-[2.5rem] p-7 sm:p-8 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7)] text-center animate-fade-in flex flex-col items-center overflow-hidden">
@@ -50,10 +48,6 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({ onGoHome }) => {
             className="w-22 h-22 object-contain relative z-10 filter drop-shadow-[0_10px_20px_rgba(255,41,117,0.45)] select-none animate-bounce"
             style={{ animationDuration: '3.5s' }}
           />
-
-          <div className="absolute -top-1 -right-1 z-20 bg-pink-500/30 border border-pink-300/40 rounded-full w-7 h-7 flex items-center justify-center text-xs shadow-md">
-            ❓
-          </div>
         </div>
 
         <span className="px-4 py-1.5 rounded-full bg-[#ff2975]/20 border border-[#ff2975]/40 text-[#ff75aa] font-extrabold text-[10px] sm:text-[11px] uppercase tracking-widest mb-3">
@@ -79,7 +73,7 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({ onGoHome }) => {
             onClick={onGoHome}
             className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-[#ff2975] via-[#a3227d] to-[#78165b] hover:brightness-110 active:scale-[0.98] text-white font-black text-xs uppercase tracking-widest shadow-[0_10px_25px_-5px_rgba(255,41,117,0.45)] transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
-            <span>✨ Back to Wonder Hero</span>
+            <span>Back to Wonder Hero</span>
           </button>
         </div>
 

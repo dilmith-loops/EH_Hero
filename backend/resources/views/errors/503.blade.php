@@ -36,7 +36,6 @@
 
     <!-- Floating ice crystals -->
     <span class="absolute top-12 left-10 text-xl opacity-30 select-none animate-pulse">❄️</span>
-    <span class="absolute top-24 right-12 text-lg opacity-40 select-none animate-bounce" style="animation-duration: 4s;">✨</span>
     <span class="absolute bottom-20 left-16 text-lg opacity-25 select-none animate-pulse" style="animation-duration: 3s;">⚡</span>
     <span class="absolute bottom-28 right-14 text-xl opacity-35 select-none animate-bounce" style="animation-duration: 5s;">❄️</span>
 
@@ -64,12 +63,6 @@
             <div class="absolute inset-0 bg-gradient-to-tr from-[#ff2975]/35 via-sky-400/25 to-amber-300/25 rounded-full blur-2xl animate-pulse"></div>
             <div class="absolute inset-2 bg-white/5 border border-white/20 rounded-full backdrop-blur-md"></div>
             <span class="text-6xl relative select-none animate-bounce" style="animation-duration: 3.5s;">🍨</span>
-            <div class="absolute -top-1 -right-1 bg-sky-500/30 border border-sky-300/40 rounded-full w-7 h-7 flex items-center justify-center text-xs shadow-md">
-                ❄️
-            </div>
-            <div class="absolute -bottom-1 -left-1 bg-pink-500/30 border border-pink-300/40 rounded-full w-7 h-7 flex items-center justify-center text-xs shadow-md">
-                ✨
-            </div>
         </div>
 
         <!-- Main Headline -->
@@ -112,9 +105,8 @@
                 <span>🔄 Refresh & Try Again</span>
             </button>
 
-            <p class="text-[11px] text-pink-200/60 font-medium flex items-center justify-center gap-1">
-                <span>✨</span>
-                <span>Automatically reconnecting when servers are ready</span>
+            <p class="text-[11px] text-pink-200/60 font-medium text-center">
+                Automatically reconnecting when servers are ready
             </p>
         </div>
 

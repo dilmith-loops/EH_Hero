@@ -27,9 +27,8 @@ export const MaintenancePage: React.FC<MaintenancePageProps> = ({ onRefresh }) =
       <div className="absolute bottom-1/6 left-1/4 w-80 h-80 bg-[#38bdf8]/15 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute top-1/2 right-1/4 w-72 h-72 bg-[#a3227d]/20 rounded-full blur-[90px] pointer-events-none" />
 
-      {/* Decorative floating ice crystals & sparkles */}
+      {/* Decorative floating ice crystals & lightning */}
       <span className="absolute top-12 left-10 text-xl opacity-30 select-none animate-pulse">❄️</span>
-      <span className="absolute top-24 right-12 text-lg opacity-40 select-none animate-bounce" style={{ animationDuration: '4s' }}>✨</span>
       <span className="absolute bottom-20 left-16 text-lg opacity-25 select-none animate-pulse" style={{ animationDuration: '3s' }}>⚡</span>
       <span className="absolute bottom-28 right-14 text-xl opacity-35 select-none animate-bounce" style={{ animationDuration: '5s' }}>❄️</span>
 
@@ -75,14 +74,6 @@ export const MaintenancePage: React.FC<MaintenancePageProps> = ({ onRefresh }) =
             className="w-24 h-24 object-contain relative z-10 filter drop-shadow-[0_10px_20px_rgba(255,41,117,0.45)] select-none animate-bounce"
             style={{ animationDuration: '3.5s' }}
           />
-
-          {/* Floating mini badge icons */}
-          <div className="absolute -top-1 -right-1 z-20 bg-sky-500/30 border border-sky-300/40 rounded-full w-7 h-7 flex items-center justify-center text-xs shadow-md">
-            ❄️
-          </div>
-          <div className="absolute -bottom-1 -left-1 z-20 bg-pink-500/30 border border-pink-300/40 rounded-full w-7 h-7 flex items-center justify-center text-xs shadow-md">
-            ✨
-          </div>
         </div>
 
         {/* Main Headline */}
@@ -142,9 +133,8 @@ export const MaintenancePage: React.FC<MaintenancePageProps> = ({ onRefresh }) =
             )}
           </button>
 
-          <p className="text-[11px] text-pink-200/60 font-medium flex items-center justify-center gap-1">
-            <span>✨</span>
-            <span>Automatically reconnecting when servers are ready</span>
+          <p className="text-[11px] text-pink-200/60 font-medium text-center">
+            Automatically reconnecting when servers are ready
           </p>
         </div>
 
