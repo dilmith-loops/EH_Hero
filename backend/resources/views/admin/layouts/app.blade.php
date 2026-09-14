@@ -135,7 +135,7 @@
                     <p class="text-xs text-slate-500 font-medium">@yield('subtitle', 'Manage Elephant House Wonder Hero activity and generated portraits')</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <a href="http://localhost:3000/EH-Hero/" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-brand-50 text-brand-800 hover:bg-brand-100 transition-colors border border-brand-200">
+                    <a href="/EH-Hero/" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-brand-50 text-brand-800 hover:bg-brand-100 transition-colors border border-brand-200">
                         <span>Launch App</span>
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>

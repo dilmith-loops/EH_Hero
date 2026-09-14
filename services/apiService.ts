@@ -42,7 +42,7 @@ export interface SystemStatusResponse {
   message: string | null;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '/EH-Hero/api' : 'http://localhost:8000/api');
 
 /**
  * Check if the backend platform maintenance mode is enabled.

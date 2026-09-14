@@ -1,0 +1,83 @@
+# ==============================================================================
+# Elephant House Wonder Hero - Apache / LiteSpeed Configuration (Hostinger)
+# ==============================================================================
+
+Options -Indexes
+AddDefaultCharset UTF-8
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # --------------------------------------------------------------------------
+    # 1. Security: Block sensitive files & internal Laravel directories
+    # --------------------------------------------------------------------------
+    RewriteRule ^\.env.* - [F,L,NC]
+    RewriteRule ^backend/\.env.* - [F,L,NC]
+    RewriteRule ^backend/(app|bootstrap|config|database|resources|routes|storage|tests) - [F,L,NC]
+    RewriteRule ^(\.git|\.github|node_modules) - [F,L,NC]
+    RewriteRule ^(package\.json|package-lock\.json|composer\.json|composer\.lock|vite\.config\.ts|tsconfig\.json) - [F,L,NC]
+
+    # Handle Authorization Headers for APIs
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # --------------------------------------------------------------------------
+    # 2. Redirect domain root / to /EH-Hero/ if accessed without subfolder
+    # --------------------------------------------------------------------------
+    RewriteCond %{REQUEST_URI} ^/$
+    RewriteRule ^$ /EH-Hero/ [R=301,L]
+
+    # --------------------------------------------------------------------------
+    # 3. IT Admin Portal & Laravel API Routing -> backend/public/index.php
+    # --------------------------------------------------------------------------
+    RewriteRule ^(EH-Hero/)?EH-PORTAL-IT-ADMIN(/.*)?$ backend/public/index.php [L,QSA]
+    RewriteRule ^(EH-Hero/)?api(/.*)?$ backend/public/index.php [L,QSA]
+    RewriteRule ^(EH-Hero/)?up$ backend/public/index.php [L,QSA]
+
+    # --------------------------------------------------------------------------
+    # 4. Storage & Uploads Routing
+    # --------------------------------------------------------------------------
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^(EH-Hero/)?storage/(.*)$ backend/public/storage/$2 [L]
+
+    RewriteRule ^(EH-Hero/)?storage(/.*)?$ backend/public/index.php [L,QSA]
+
+    # --------------------------------------------------------------------------
+    # 5. Static Assets (dist/ directory for CSS, JS, images, fonts)
+    # --------------------------------------------------------------------------
+    # If the file exists directly in dist/
+    RewriteCond %{DOCUMENT_ROOT}/dist/$2 -f
+    RewriteRule ^(EH-Hero/)?(.*)$ dist/$2 [L]
+
+    # Match static asset patterns and serve from dist
+    RewriteCond %{REQUEST_URI} (assets/.*|.*\.(?:css|js|png|jpe?g|gif|svg|ico|webp|woff2?|ttf|eot))$ [NC]
+    RewriteRule ^(EH-Hero/)?(.*)$ dist/$2 [L]
+
+    # --------------------------------------------------------------------------
+    # 6. Single Page App (SPA) Fallback -> dist/index.html
+    # --------------------------------------------------------------------------
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(EH-Hero(/.*)?)?$ dist/index.html [L]
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# Performance: Gzip Compression & Asset Caching
+# ------------------------------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>

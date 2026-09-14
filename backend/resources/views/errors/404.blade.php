@@ -60,7 +60,7 @@
                    class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-brand-500 via-brand-700 to-brand-800 hover:brightness-110 active:scale-[0.98] text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-brand-500/25 transition-all">
                     Return to Portal
                 </a>
-                <a href="http://localhost:3000/EH-Hero/"
+                <a href="/EH-Hero/"
                    class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 active:scale-[0.98] text-white font-extrabold text-xs uppercase tracking-wider transition-all">
                     Launch Mobile App
                 </a>

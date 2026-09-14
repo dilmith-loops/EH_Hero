@@ -70,6 +70,9 @@ Route::get('/EH-PORTAL-IT-ADMIN/{any}', function ($any) {
     return redirect('/EH-Hero/EH-PORTAL-IT-ADMIN/' . $any);
 })->where('any', '.*');
 
+// API routes mapped under /EH-Hero/api prefix for reverse proxy / subfolder routing
+Route::prefix('EH-Hero/api')->group(base_path('routes/api.php'));
+
 // Legacy admin routes return 404 to protect secret portal
 Route::any('/admin{any}', function () {
     return response()->view('errors.404', [], 404);
