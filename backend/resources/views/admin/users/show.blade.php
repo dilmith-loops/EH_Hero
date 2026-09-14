@@ -16,6 +16,8 @@
                 <div class="flex items-center gap-3 text-xs text-slate-500 font-semibold mt-1">
                     <span>📱 {{ $user->phone }}</span>
                     <span>•</span>
+                    <span>🌐 IP: {{ $user->ip_address ?? 'N/A' }}</span>
+                    <span>•</span>
                     <span>Registered {{ $user->created_at->format('M d, Y h:i A') }}</span>
                 </div>
             </div>

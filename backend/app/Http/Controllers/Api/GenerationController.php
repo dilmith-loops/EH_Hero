@@ -42,6 +42,7 @@ class GenerationController extends Controller
             'custom_prompt' => $validated['custom_prompt'] ?? null,
             'original_image_path' => $originalPath,
             'generated_image_path' => $generatedPath,
+            'ip_address' => $request->ip(),
         ]);
 
         return response()->json([

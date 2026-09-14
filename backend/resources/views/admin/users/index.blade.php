@@ -69,7 +69,12 @@
                                         </a>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 font-bold text-slate-700">{{ $user->phone }}</td>
+                                <td class="px-6 py-4">
+                                    <div class="font-bold text-slate-700">{{ $user->phone }}</div>
+                                    @if($user->ip_address)
+                                        <div class="text-[10px] font-mono text-slate-400 mt-0.5">IP: {{ $user->ip_address }}</div>
+                                    @endif
+                                </td>
                                 <td class="px-6 py-4 text-center">
                                     <span class="inline-block px-3 py-1 rounded-full text-xs font-black {{ $user->generations_count > 0 ? 'bg-brand-50 text-brand-800' : 'bg-slate-100 text-slate-500' }}">
                                         {{ $user->generations_count }}

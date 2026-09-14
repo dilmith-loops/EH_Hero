@@ -19,6 +19,7 @@ class Generation extends Model
         'custom_prompt',
         'original_image_path',
         'generated_image_path',
+        'ip_address',
     ];
 
     protected $appends = [

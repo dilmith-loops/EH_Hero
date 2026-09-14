@@ -19,14 +19,25 @@ class AppUserController extends Controller
             'phone' => 'required|string|max:30',
         ]);
 
+        $ipAddress = $request->ip();
+
         $user = AppUser::firstOrCreate(
             ['phone' => trim($validated['phone'])],
-            ['name' => trim($validated['name'])]
+            [
+                'name' => trim($validated['name']),
+                'ip_address' => $ipAddress,
+            ]
         );
 
-        // Update name if different and was provided
+        $updates = [];
         if ($user->name !== trim($validated['name'])) {
-            $user->update(['name' => trim($validated['name'])]);
+            $updates['name'] = trim($validated['name']);
+        }
+        if ($user->ip_address !== $ipAddress) {
+            $updates['ip_address'] = $ipAddress;
+        }
+        if (!empty($updates)) {
+            $user->update($updates);
         }
 
         return response()->json([

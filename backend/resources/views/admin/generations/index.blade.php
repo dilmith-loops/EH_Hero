@@ -67,6 +67,7 @@
                                  'customPrompt' => $gen->custom_prompt,
                                  'originalUrl' => $gen->original_image_url,
                                  'generatedUrl' => $gen->generated_image_url,
+                                 'ipAddress' => $gen->ip_address ?? $gen->user->ip_address ?? 'N/A',
                                  'date' => $gen->created_at->format('M d, Y h:i A'),
                                  'downloadUrl' => route('admin.generations.download', $gen->id),
                              ]) }})">
@@ -191,7 +192,7 @@
 <script>
     function openModal(data) {
         document.getElementById('modalUserName').innerText = data.userName;
-        document.getElementById('modalSub').innerText = data.treatName + ' • ' + data.userPhone;
+        document.getElementById('modalSub').innerText = data.treatName + ' • ' + data.userPhone + ' • IP: ' + data.ipAddress;
         document.getElementById('modalDate').innerText = 'Generated on ' + data.date;
         document.getElementById('modalDownloadBtn').href = data.downloadUrl;
 

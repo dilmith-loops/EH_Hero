@@ -13,6 +13,7 @@ class AppUser extends Model
     protected $fillable = [
         'name',
         'phone',
+        'ip_address',
     ];
 
     public function generations(): HasMany

@@ -59,13 +59,14 @@ class UserController extends Controller
 
         return response()->stream(function () use ($users) {
             $handle = fopen('php://output', 'w');
-            fputcsv($handle, ['ID', 'Name', 'Phone Number', 'Generations Count', 'Registered Date']);
+            fputcsv($handle, ['ID', 'Name', 'Phone Number', 'IP Address', 'Generations Count', 'Registered Date']);
 
             foreach ($users as $user) {
                 fputcsv($handle, [
                     $user->id,
                     $user->name,
                     $user->phone,
+                    $user->ip_address ?? 'N/A',
                     $user->generations_count,
                     $user->created_at->format('Y-m-d H:i:s'),
                 ]);
