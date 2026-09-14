@@ -19,7 +19,7 @@ class UserController extends Controller
             $search = trim($request->input('search'));
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
+                  ->orWhere('ip_address', 'like', "%{$search}%");
             });
         }
 
@@ -59,16 +59,15 @@ class UserController extends Controller
 
         return response()->stream(function () use ($users) {
             $handle = fopen('php://output', 'w');
-            fputcsv($handle, ['ID', 'Name', 'Phone Number', 'IP Address', 'Generations Count', 'Registered Date']);
+            fputcsv($handle, ['ID', 'Participant Name', 'IP Address', 'Generations Count', 'Registered Date']);
 
             foreach ($users as $user) {
                 fputcsv($handle, [
                     $user->id,
                     $user->name,
-                    $user->phone,
                     $user->ip_address ?? 'N/A',
                     $user->generations_count,
-                    $user->created_at->format('Y-m-d H:i:s'),
+                    $user->created_at->format('Y-m-d h:i:s A'),
                 ]);
             }
 

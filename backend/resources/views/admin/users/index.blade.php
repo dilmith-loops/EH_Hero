@@ -10,7 +10,7 @@
         <!-- Search Form -->
         <form method="GET" action="{{ route('admin.users.index') }}" class="w-full sm:w-96 flex items-center gap-2">
             <div class="relative w-full">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or mobile..."
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or IP..."
                        class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-700 transition-all">
                 <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -49,7 +49,7 @@
                         <tr>
                             <th class="px-6 py-4">ID</th>
                             <th class="px-6 py-4">Participant Name</th>
-                            <th class="px-6 py-4">Mobile Number</th>
+                            <th class="px-6 py-4">IP Address</th>
                             <th class="px-6 py-4 text-center">Generations</th>
                             <th class="px-6 py-4">Registered Date</th>
                             <th class="px-6 py-4 text-right">Actions</th>
@@ -70,14 +70,9 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    @if($user->phone)
-                                        <div class="font-bold text-slate-700">{{ $user->phone }}</div>
-                                    @else
-                                        <div class="text-xs text-slate-400 font-semibold">—</div>
-                                    @endif
-                                    @if($user->ip_address)
-                                        <div class="text-[10px] font-mono text-slate-400 mt-0.5">IP: {{ $user->ip_address }}</div>
-                                    @endif
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200/60">
+                                        {{ $user->ip_address ?? 'N/A' }}
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     <span class="inline-block px-3 py-1 rounded-full text-xs font-black {{ $user->generations_count > 0 ? 'bg-brand-50 text-brand-800' : 'bg-slate-100 text-slate-500' }}">

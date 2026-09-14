@@ -61,7 +61,6 @@
                              onclick="openModal({{ json_encode([
                                  'id' => $gen->id,
                                  'userName' => $gen->user->name ?? 'Participant',
-                                 'userPhone' => $gen->user->phone ?? 'N/A',
                                  'treatName' => $gen->treat_name,
                                  'style' => $gen->style_id,
                                  'customPrompt' => $gen->custom_prompt,
@@ -97,8 +96,8 @@
                                     {{ $gen->created_at->diffForHumans() }}
                                 </span>
                             </div>
-                            <p class="text-[11px] text-slate-500 font-medium mt-0.5">
-                                📱 {{ $gen->user->phone ?? '' }}
+                            <p class="text-[10px] font-mono text-slate-400 mt-0.5">
+                                IP: {{ $gen->ip_address ?? $gen->user->ip_address ?? 'N/A' }}
                             </p>
                         </div>
                     </div>
@@ -192,7 +191,7 @@
 <script>
     function openModal(data) {
         document.getElementById('modalUserName').innerText = data.userName;
-        document.getElementById('modalSub').innerText = data.treatName + ' • ' + data.userPhone + ' • IP: ' + data.ipAddress;
+        document.getElementById('modalSub').innerText = data.treatName + ' • IP: ' + data.ipAddress;
         document.getElementById('modalDate').innerText = 'Generated on ' + data.date;
         document.getElementById('modalDownloadBtn').href = data.downloadUrl;
 

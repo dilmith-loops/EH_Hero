@@ -19,7 +19,7 @@
                 <span class="text-3xl font-black text-slate-900">{{ number_format($totalUsers) }}</span>
                 <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">+{{ $todayUsers }} today</span>
             </div>
-            <p class="text-xs text-slate-400 font-medium mt-2">Registered via mobile number</p>
+            <p class="text-xs text-slate-400 font-medium mt-2">Total app participants</p>
         </div>
 
         <!-- Total Generations -->
@@ -115,7 +115,7 @@
                         <thead>
                             <tr class="border-b border-slate-100 text-slate-400 font-bold uppercase tracking-wider">
                                 <th class="pb-3">Name</th>
-                                <th class="pb-3">Phone</th>
+                                <th class="pb-3">IP Address</th>
                                 <th class="pb-3 text-center">Generations</th>
                                 <th class="pb-3 text-right">Joined</th>
                             </tr>
@@ -128,7 +128,7 @@
                                             {{ $user->name }}
                                         </a>
                                     </td>
-                                    <td class="py-3 font-semibold text-slate-600">{{ $user->phone }}</td>
+                                    <td class="py-3 font-mono text-slate-500 font-semibold">{{ $user->ip_address ?? 'N/A' }}</td>
                                     <td class="py-3 text-center">
                                         <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-black {{ $user->generations_count > 0 ? 'bg-brand-50 text-brand-800' : 'bg-slate-100 text-slate-500' }}">
                                             {{ $user->generations_count }}
