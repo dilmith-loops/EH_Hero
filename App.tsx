@@ -61,6 +61,18 @@ const App: React.FC = () => {
     const handleRoute = () => {
       const hash = window.location.hash.toLowerCase();
       const params = new URLSearchParams(window.location.search);
+      const path = window.location.pathname;
+
+      if (
+        path.includes('EH-PORTAL-IT-ADMIN') ||
+        hash === '#eh-portal-it-admin' ||
+        params.get('page')?.toUpperCase() === 'EH-PORTAL-IT-ADMIN' ||
+        params.get('admin') !== null
+      ) {
+        window.location.href = '/admin/settings';
+        return;
+      }
+
       if (hash === '#maintenance' || params.get('page') === 'maintenance') {
         setCurrentStep('maintenance');
       } else if (hash === '#404' || hash === '#notfound' || hash === '#not-found' || params.get('page') === '404') {

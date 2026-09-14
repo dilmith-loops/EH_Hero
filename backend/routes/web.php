@@ -16,6 +16,23 @@ Route::get('/', function () {
     return redirect()->route('admin.dashboard');
 });
 
+// Secret IT Admin Portal Entrypoint
+Route::get('/EH-PORTAL-IT-ADMIN', function () {
+    if (auth()->check()) {
+        return redirect()->route('admin.settings.index');
+    }
+    session(['url.intended' => route('admin.settings.index')]);
+    return redirect()->route('admin.login');
+})->name('it-admin.portal');
+
+Route::get('/EH-Hero/EH-PORTAL-IT-ADMIN', function () {
+    if (auth()->check()) {
+        return redirect()->route('admin.settings.index');
+    }
+    session(['url.intended' => route('admin.settings.index')]);
+    return redirect()->route('admin.login');
+})->name('it-admin.portal.alias');
+
 // Admin Authentication Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::get('/admin/login', [AuthController::class, 'showLogin'])->name('admin.login');

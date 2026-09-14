@@ -10,13 +10,65 @@ export default defineConfig(({ mode }) => {
         port: 3000,
         host: '0.0.0.0',
         proxy: {
+          '/EH-Hero/EH-PORTAL-IT-ADMIN': {
+            target: 'http://127.0.0.1:8000',
+            changeOrigin: false,
+            rewrite: () => '/EH-PORTAL-IT-ADMIN',
+          },
+          '/EH-PORTAL-IT-ADMIN': {
+            target: 'http://127.0.0.1:8000',
+            changeOrigin: false,
+          },
+          '/EH-Hero/admin': {
+            target: 'http://127.0.0.1:8000',
+            changeOrigin: false,
+            rewrite: (path) => path.replace(/^\/EH-Hero/, ''),
+          },
+          '/admin': {
+            target: 'http://127.0.0.1:8000',
+            changeOrigin: false,
+          },
+          '/login': {
+            target: 'http://127.0.0.1:8000',
+            changeOrigin: false,
+          },
           '/EH-Hero/api': {
-            target: 'http://localhost',
-            changeOrigin: true,
+            target: 'http://127.0.0.1:8000',
+            changeOrigin: false,
+            rewrite: (path) => path.replace(/^\/EH-Hero/, ''),
+          },
+          '/api': {
+            target: 'http://127.0.0.1:8000',
+            changeOrigin: false,
+          },
+          '/storage': {
+            target: 'http://127.0.0.1:8000',
+            changeOrigin: false,
           },
         },
       },
-      plugins: [react()],
+      plugins: [
+        react(),
+        {
+          name: 'it-admin-route-handler',
+          configureServer(server) {
+            server.middlewares.use((req, res, next) => {
+              const url = (req.url || '').split('?')[0].replace(/\/+$/, '');
+              if (
+                url === '/EH-Hero/EH-PORTAL-IT-ADMIN' ||
+                url === '/EH-PORTAL-IT-ADMIN'
+              ) {
+                res.writeHead(302, {
+                  Location: '/admin/settings',
+                });
+                res.end();
+                return;
+              }
+              next();
+            });
+          },
+        },
+      ],
       define: {
         'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
         'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
