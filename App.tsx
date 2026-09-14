@@ -20,13 +20,14 @@ import {
   ImageState,
   AnimeResult,
 } from './types';
-import { saveGeneratedPortrait, checkGenerationLimit, UserInfo } from './services/apiService';
+import { saveGeneratedPortrait, checkGenerationLimit, checkSystemStatus, UserInfo } from './services/apiService';
 
 type AppStep = 'login' | 'upload' | 'result' | 'maintenance' | 'not-found';
 
 const App: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [currentStep, setCurrentStep] = useState<AppStep>('login');
+  const [maintenanceMessage, setMaintenanceMessage] = useState<string | null>(null);
 
   const [photo, setPhoto] = useState<ImageState>({
     file: null,
@@ -72,6 +73,21 @@ const App: React.FC = () => {
     return () => window.removeEventListener('hashchange', handleRoute);
   }, []);
 
+  useEffect(() => {
+    const verifySystemStatus = async () => {
+      try {
+        const res = await checkSystemStatus();
+        if (res.maintenance) {
+          setMaintenanceMessage(res.message);
+          setCurrentStep('maintenance');
+        }
+      } catch (err) {
+        console.warn('System status check error:', err);
+      }
+    };
+    verifySystemStatus();
+  }, []);
+
   const handleGoHome = () => {
     window.location.hash = '';
     setCurrentStep('login');
@@ -79,10 +95,13 @@ const App: React.FC = () => {
 
   const handleMaintenanceRefresh = async () => {
     try {
-      const status = await checkGenerationLimit();
-      if (status) {
+      const res = await checkSystemStatus();
+      if (!res.maintenance) {
+        setMaintenanceMessage(null);
         window.location.hash = '';
         setCurrentStep('login');
+      } else {
+        setMaintenanceMessage(res.message);
       }
     } catch {
       window.location.reload();
@@ -140,8 +159,14 @@ const App: React.FC = () => {
     setError(null);
 
     try {
-      // Pre-check generation limit for this device/IP
+      // Pre-check generation limit & maintenance status for this device/IP
       const limitCheck = await checkGenerationLimit();
+      if (limitCheck.maintenance) {
+        setMaintenanceMessage(limitCheck.message || null);
+        setCurrentStep('maintenance');
+        setLoading(false);
+        return;
+      }
       if (!limitCheck.can_generate) {
         setError(limitCheck.message || 'Generation limit reached for this device.');
         setLoading(false);
@@ -415,7 +440,7 @@ const App: React.FC = () => {
 
         {/* STEP 4: MAINTENANCE PAGE */}
         {currentStep === 'maintenance' && (
-          <MaintenancePage onRefresh={handleMaintenanceRefresh} />
+          <MaintenancePage onRefresh={handleMaintenanceRefresh} message={maintenanceMessage} />
         )}
 
         {/* STEP 5: 404 NOT FOUND PAGE */}

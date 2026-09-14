@@ -8,6 +8,11 @@ use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    if (\App\Models\Setting::isMaintenanceEnabled() && !auth()->check()) {
+        return response()->view('errors.503', [
+            'exception' => new \Exception(\App\Models\Setting::getMaintenanceMessage())
+        ], 503);
+    }
     return redirect()->route('admin.dashboard');
 });
 
@@ -36,6 +41,8 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // Settings Management
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::post('/settings/toggle-maintenance', [SettingController::class, 'toggleMaintenance'])->name('settings.toggle-maintenance');
+
 
     // Error & Maintenance Page Previews
     Route::get('/preview/404', function () {

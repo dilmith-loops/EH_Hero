@@ -34,9 +34,42 @@ export interface LimitStatusResponse {
   remaining: number | null;
   period: string;
   message: string | null;
+  maintenance?: boolean;
+}
+
+export interface SystemStatusResponse {
+  maintenance: boolean;
+  message: string | null;
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+
+/**
+ * Check if the backend platform maintenance mode is enabled.
+ */
+export async function checkSystemStatus(): Promise<SystemStatusResponse> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/system-status`);
+    if (response.status === 503) {
+      const data = await response.json().catch(() => ({}));
+      return {
+        maintenance: true,
+        message: data.message || 'System under maintenance',
+      };
+    }
+    if (!response.ok) throw new Error('Status check failed');
+    const data = await response.json();
+    return {
+      maintenance: Boolean(data.maintenance),
+      message: data.message || null,
+    };
+  } catch (error) {
+    return {
+      maintenance: false,
+      message: null,
+    };
+  }
+}
 
 /**
  * Check if the current device/IP has reached the generation limit.
@@ -44,6 +77,19 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
 export async function checkGenerationLimit(): Promise<LimitStatusResponse> {
   try {
     const response = await fetch(`${API_BASE_URL}/generations/limit-status`);
+    if (response.status === 503) {
+      const data = await response.json().catch(() => ({}));
+      return {
+        maintenance: true,
+        limit_enabled: true,
+        can_generate: false,
+        max_limit: 0,
+        current_count: 0,
+        remaining: 0,
+        period: 'maintenance',
+        message: data.message || 'System under maintenance',
+      };
+    }
     if (!response.ok) throw new Error('Limit status fetch failed');
     return await response.json();
   } catch (error) {

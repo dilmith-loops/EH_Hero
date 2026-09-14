@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 
 interface MaintenancePageProps {
   onRefresh?: () => void;
+  message?: string | null;
 }
 
-export const MaintenancePage: React.FC<MaintenancePageProps> = ({ onRefresh }) => {
+export const MaintenancePage: React.FC<MaintenancePageProps> = ({ onRefresh, message }) => {
   const [checking, setChecking] = useState(false);
   const baseUrl = import.meta.env.BASE_URL || '/';
 
@@ -88,7 +89,7 @@ export const MaintenancePage: React.FC<MaintenancePageProps> = ({ onRefresh }) =
         </h2>
 
         <p className="text-xs sm:text-sm text-slate-300 font-medium max-w-xs mx-auto mt-3 leading-relaxed">
-          Our servers are taking a frosty breather to serve up faster, sharper, and even more magical anime transformations. We'll be back online in just a few minutes!
+          {message || "Our servers are taking a frosty breather to serve up faster, sharper, and even cooler anime transformations. We'll be back online in just a few minutes!"}
         </p>
 
         {/* Live System Gauge Shimmer */}

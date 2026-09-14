@@ -19,6 +19,19 @@ class GenerationController extends Controller
      */
     public function checkLimit(Request $request): JsonResponse
     {
+        if (Setting::isMaintenanceEnabled()) {
+            return response()->json([
+                'maintenance' => true,
+                'limit_enabled' => true,
+                'can_generate' => false,
+                'max_limit' => 0,
+                'current_count' => 0,
+                'remaining' => 0,
+                'period' => 'maintenance',
+                'message' => Setting::getMaintenanceMessage(),
+            ], 503);
+        }
+
         $clientIp = $request->ip();
         $limitEnabled = Setting::isLimitEnabled();
         $maxLimit = Setting::getMaxGenerationsPerIp();
@@ -49,6 +62,14 @@ class GenerationController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        if (Setting::isMaintenanceEnabled()) {
+            return response()->json([
+                'success' => false,
+                'error' => 'maintenance_mode',
+                'message' => Setting::getMaintenanceMessage(),
+            ], 503);
+        }
+
         $clientIp = $request->ip();
 
         // Enforce IP generation limit if enabled

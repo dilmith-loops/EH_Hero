@@ -14,6 +14,14 @@ class AppUserController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        if (\App\Models\Setting::isMaintenanceEnabled()) {
+            return response()->json([
+                'success' => false,
+                'error' => 'maintenance_mode',
+                'message' => \App\Models\Setting::getMaintenanceMessage(),
+            ], 503);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:30',

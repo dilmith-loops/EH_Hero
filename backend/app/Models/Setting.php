@@ -73,4 +73,23 @@ class Setting extends Model
             'You have reached the maximum allowed image generations for this device.'
         );
     }
+
+    /**
+     * Check if Platform Maintenance Mode is enabled.
+     */
+    public static function isMaintenanceEnabled(): bool
+    {
+        return static::get('maintenance_mode', '0') === '1';
+    }
+
+    /**
+     * Get custom maintenance mode message.
+     */
+    public static function getMaintenanceMessage(): string
+    {
+        return static::get(
+            'maintenance_message',
+            'Our servers are taking a frosty breather to serve up faster, sharper, and even cooler anime transformations. We will be back online shortly!'
+        );
+    }
 }
