@@ -74,7 +74,7 @@ class Setting extends Model
     {
         return static::get(
             'ip_limit_message',
-            'You have reached the maximum allowed image generations for this device.'
+            'Too many generations, please try again.'
         );
     }
 

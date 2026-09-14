@@ -106,7 +106,7 @@ export async function transformImageToAnime(
 ): Promise<string> {
   const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    throw new Error('Gemini API key is missing. Set GEMINI_API_KEY in .env.local');
+    throw new Error('Too many generations, please try again.');
   }
 
   const ai = new GoogleGenAI({ apiKey });
@@ -220,10 +220,7 @@ ${customInstruction}${treatImageReferenceNotice}`;
     }
   }
 
-  throw new Error(
-    lastError?.message ||
-    'Transformation failed. Please try again with a clear photo!'
-  );
+  throw new Error('Too many generations, please try again.');
 }
 
 /** Overlay public/wonder.png logo seamlessly onto bottom center of generated image. */

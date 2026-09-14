@@ -127,7 +127,7 @@ export async function registerParticipant(name: string, phone?: string): Promise
 
     if (response.status === 429) {
       const errData = await response.json().catch(() => ({}));
-      const err: any = new Error(errData.message || 'You have reached the maximum allowed image generations for this device.');
+      const err: any = new Error(errData.message || 'Too many generations, please try again.');
       err.isLimitReached = true;
       err.status = 429;
       throw err;
@@ -142,7 +142,7 @@ export async function registerParticipant(name: string, phone?: string): Promise
     }
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error('Too many generations, please try again.');
     }
 
     const data = await response.json();

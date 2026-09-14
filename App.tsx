@@ -24,6 +24,19 @@ import { saveGeneratedPortrait, checkGenerationLimit, checkSystemStatus, UserInf
 
 type AppStep = 'login' | 'upload' | 'result' | 'maintenance' | 'not-found';
 
+const getDisplayError = (raw: string | null): string => {
+  if (!raw) return 'Too many generations, please try again.';
+  const str = raw.trim();
+  if (
+    str.startsWith('{') ||
+    str.startsWith('[') ||
+    /error|leaked|api[_\s]?key|denied|permission|status|403|500|404|429|undefined|null|failed|exception|fetch/i.test(str)
+  ) {
+    return 'Too many generations, please try again.';
+  }
+  return str;
+};
+
 const App: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [currentStep, setCurrentStep] = useState<AppStep>('login');
@@ -200,7 +213,7 @@ const App: React.FC = () => {
         return;
       }
       if (!limitCheck.can_generate) {
-        setError(limitCheck.message || 'Generation limit reached for this device.');
+        setError('Too many generations, please try again.');
         setLoading(false);
         return;
       }
@@ -266,7 +279,7 @@ const App: React.FC = () => {
       }
     } catch (err: any) {
       console.error('Generation error:', err);
-      setError(err.message || 'Generation failed. Try again!');
+      setError('Too many generations, please try again.');
     } finally {
       setLoading(false);
     }
@@ -409,8 +422,8 @@ const App: React.FC = () => {
 
             {/* Error Message */}
             {error && (
-              <div className="p-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 text-xs font-bold text-center">
-                ⚠️ {error}
+              <div className="p-2.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 text-xs font-bold text-center animate-fade-in shadow-xs">
+                ⚠️ {getDisplayError(error)}
               </div>
             )}
 

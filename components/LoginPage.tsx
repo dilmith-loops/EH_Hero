@@ -21,7 +21,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
           setError(status.message || 'Platform is currently under maintenance.');
           setIsLimitReached(true);
         } else if (!status.can_generate) {
-          setError(status.message || 'You have reached the maximum allowed image generations for this device.');
+          setError(status.message || 'Too many generations, please try again.');
           setIsLimitReached(true);
         }
       } catch (err) {
@@ -36,7 +36,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 
     // If device is already at limit, block immediately
     if (isLimitReached) {
-      setError(error || 'You have reached the maximum allowed image generations for this device.');
+      setError(error || 'Too many generations, please try again.');
       return;
     }
 
@@ -59,7 +59,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       }
 
       if (!limitStatus.can_generate) {
-        setError(limitStatus.message || 'You have reached the maximum allowed image generations for this device.');
+        setError(limitStatus.message || 'Too many generations, please try again.');
         setIsLimitReached(true);
         setIsSubmitting(false);
         return;
@@ -70,7 +70,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       onLogin(user);
     } catch (err: any) {
       if (err.isLimitReached || err.status === 429) {
-        setError(err.message || 'You have reached the maximum allowed image generations for this device.');
+        setError(err.message || 'Too many generations, please try again.');
         setIsLimitReached(true);
       } else if (err.isMaintenance || err.status === 503) {
         setError(err.message || 'Platform is currently under maintenance.');
@@ -111,7 +111,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             {/* Error / Limit Warning Banner */}
             {error && (
               <div className="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 text-xs font-bold text-center leading-relaxed animate-fade-in shadow-xs">
-                ⚠️ {error}
+                ⚠️ {error.startsWith('{') || /error|leaked|api[_\s]?key|denied|status|403|500|exception/i.test(error) ? 'Too many generations, please try again.' : error}
               </div>
             )}
 
