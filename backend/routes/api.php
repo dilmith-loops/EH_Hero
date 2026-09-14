@@ -19,3 +19,10 @@ Route::get('/generations/limit-status', [GenerationController::class, 'checkLimi
 Route::post('/generations', [GenerationController::class, 'store']);
 Route::get('/generations/{id}', [GenerationController::class, 'show']);
 
+Route::get('/gemini-key', function () {
+    return response()->json([
+        'api_key' => env('GEMINI_API_KEY') ?: null,
+    ]);
+});
+
+

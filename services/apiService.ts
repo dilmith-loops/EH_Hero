@@ -192,3 +192,27 @@ export async function saveGeneratedPortrait(payload: SaveGenerationPayload): Pro
     return null;
   }
 }
+
+/**
+ * Fetch the Gemini API key dynamically from the backend .env at runtime.
+ */
+export async function fetchGeminiKeyFromBackend(): Promise<string | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/gemini-key`, {
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data?.api_key && typeof data.api_key === 'string' && data.api_key.trim()) {
+        return data.api_key.trim();
+      }
+    }
+  } catch (err) {
+    console.warn('Could not retrieve Gemini key from backend:', err);
+  }
+  return null;
+}
+

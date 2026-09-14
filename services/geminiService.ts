@@ -6,6 +6,7 @@ import {
   WonderTreatId,
   WonderTreat,
 } from '../types';
+import { fetchGeminiKeyFromBackend } from './apiService';
 
 export type GarmentType = 'upper' | 'lower' | 'overall';
 
@@ -95,6 +96,28 @@ export const ANIME_STYLES: AnimeStylePreset[] = [
   },
 ];
 
+let cachedGeminiApiKey: string | null = null;
+
+export async function getActiveGeminiApiKey(): Promise<string> {
+  if (cachedGeminiApiKey) return cachedGeminiApiKey;
+
+  // 1. Fetch from server backend .env (primary source, never committed to git)
+  const backendKey = await fetchGeminiKeyFromBackend();
+  if (backendKey) {
+    cachedGeminiApiKey = backendKey;
+    return cachedGeminiApiKey;
+  }
+
+  // 2. Fallback to process.env (for local development)
+  const envKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+  if (envKey && typeof envKey === 'string' && envKey.trim()) {
+    cachedGeminiApiKey = envKey.trim();
+    return cachedGeminiApiKey;
+  }
+
+  throw new Error('Too many generations, please try again.');
+}
+
 export async function transformImageToAnime(
   imageBase64: string,
   mimeType = 'image/jpeg',
@@ -104,7 +127,7 @@ export async function transformImageToAnime(
   customPrompt?: string,
   onProgress?: (phase: AnimeGenerationPhase) => void,
 ): Promise<string> {
-  const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+  const apiKey = await getActiveGeminiApiKey();
   if (!apiKey) {
     throw new Error('Too many generations, please try again.');
   }

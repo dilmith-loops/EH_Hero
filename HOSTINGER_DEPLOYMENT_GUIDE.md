@@ -87,6 +87,9 @@ This guide walks you through deploying the Elephant House Wonder Hero platform t
    FILESYSTEM_DISK=public
    CACHE_STORE=file
    QUEUE_CONNECTION=sync
+
+   # Google Gemini API Key (Kept safe on server, never exposed in Git)
+   GEMINI_API_KEY=your_gemini_api_key_here
    ```
 6. Save the file.
 
