@@ -109,7 +109,9 @@
                             Download
                         </a>
                         <form method="POST" action="{{ route('admin.generations.destroy', $gen->id) }}"
-                              onsubmit="return confirm('Delete this generation permanently?');">
+                              data-confirm="Are you sure you want to permanently delete this {{ $gen->treat_name ?? 'generation' }} image for participant '{{ addslashes($gen->user->name ?? 'Guest') }}'?"
+                              data-confirm-title="Delete Generation"
+                              data-confirm-btn="Yes, Delete">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="p-2 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 transition-colors cursor-pointer" title="Delete">

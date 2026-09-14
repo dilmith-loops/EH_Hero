@@ -113,7 +113,9 @@
                                         <!-- Delete Button -->
                                         @if($admin->id !== Auth::id())
                                             <form method="POST" action="{{ route('admin.admins.destroy', $admin->id) }}"
-                                                  onsubmit="return confirm('Are you sure you want to delete administrator \'{{ addslashes($admin->name) }}\'? This action cannot be undone.');"
+                                                  data-confirm="Are you sure you want to delete administrator '{{ addslashes($admin->name) }}'? This action cannot be undone."
+                                                  data-confirm-title="Delete Administrator"
+                                                  data-confirm-btn="Yes, Delete"
                                                   class="inline-block">
                                                 @csrf
                                                 @method('DELETE')

@@ -87,7 +87,10 @@
                                         <a href="{{ route('admin.users.show', $user->id) }}" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 font-bold text-xs transition-colors">
                                             View
                                         </a>
-                                        <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}" onsubmit="return confirm('Are you sure you want to delete this user and all their generations?');">
+                                        <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}"
+                                              data-confirm="Are you sure you want to delete participant '{{ addslashes($user->name) }}' and all their generations? This action cannot be undone."
+                                              data-confirm-title="Delete Participant"
+                                              data-confirm-btn="Yes, Delete">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="px-3 py-1.5 rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100 font-bold text-xs transition-colors cursor-pointer">

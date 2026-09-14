@@ -170,6 +170,201 @@
         </main>
     </div>
 
+    <!-- Customized Modal Dialog Box -->
+    <div id="customConfirmModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200" aria-modal="true" role="dialog">
+        <div id="customConfirmCard" class="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-100 transform scale-95 transition-all duration-200 text-center sm:text-left animate-fade-in">
+            <!-- Icon and Header -->
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+                <div id="customConfirmIconWrapper" class="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-100 flex items-center justify-center text-2xl shrink-0 shadow-xs text-rose-600">
+                    <span id="customConfirmIcon">⚠️</span>
+                </div>
+                <div class="flex-1 text-center sm:text-left">
+                    <h3 id="customConfirmTitle" class="text-base sm:text-lg font-black text-slate-900 tracking-tight">Confirm Action</h3>
+                    <p id="customConfirmMessage" class="text-xs sm:text-sm text-slate-500 mt-1.5 font-medium leading-relaxed">
+                        Are you sure you want to proceed?
+                    </p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-6 flex flex-col-reverse sm:flex-row items-center gap-3">
+                <button type="button" id="customConfirmCancelBtn"
+                        class="w-full sm:w-1/2 py-3 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 active:scale-[0.98] text-slate-700 font-bold text-xs transition-all cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" id="customConfirmOkBtn"
+                        class="w-full sm:w-1/2 py-3 px-4 rounded-xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 active:scale-[0.98] text-white font-extrabold text-xs shadow-md shadow-rose-600/25 transition-all cursor-pointer">
+                    Yes, Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customized Alert Modal Dialog Box -->
+    <div id="customAlertModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200" aria-modal="true" role="dialog">
+        <div id="customAlertCard" class="relative w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border border-slate-100 transform scale-95 transition-all duration-200 text-center animate-fade-in">
+            <div id="customAlertIconWrapper" class="w-12 h-12 rounded-2xl bg-brand-50 border border-brand-100 flex items-center justify-center text-2xl mx-auto shadow-xs text-brand-700 mb-3">
+                <span id="customAlertIcon">ℹ️</span>
+            </div>
+            <h3 id="customAlertTitle" class="text-base font-black text-slate-900 tracking-tight">Notice</h3>
+            <p id="customAlertMessage" class="text-xs sm:text-sm text-slate-500 mt-1.5 font-medium leading-relaxed">
+                Message details
+            </p>
+            <div class="mt-5">
+                <button type="button" id="customAlertOkBtn"
+                        class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-brand-700 to-brand-800 hover:brightness-110 active:scale-[0.98] text-white font-extrabold text-xs shadow-md shadow-brand-800/25 transition-all cursor-pointer">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Confirm Dialog
+            let activeConfirmCallback = null;
+            const confirmModal = document.getElementById('customConfirmModal');
+            const confirmCard = document.getElementById('customConfirmCard');
+            const confirmTitleEl = document.getElementById('customConfirmTitle');
+            const confirmMessageEl = document.getElementById('customConfirmMessage');
+            const confirmOkBtn = document.getElementById('customConfirmOkBtn');
+            const confirmCancelBtn = document.getElementById('customConfirmCancelBtn');
+            const confirmIconEl = document.getElementById('customConfirmIcon');
+            const confirmIconWrapper = document.getElementById('customConfirmIconWrapper');
+
+            window.showConfirmDialog = function(options) {
+                return new Promise((resolve) => {
+                    const title = options.title || 'Confirm Action';
+                    const message = options.message || 'Are you sure you want to proceed?';
+                    const confirmText = options.confirmText || 'Yes, Delete';
+                    const cancelText = options.cancelText || 'Cancel';
+                    const isDanger = options.isDanger !== false;
+                    const icon = options.icon || (isDanger ? '⚠️' : '❓');
+
+                    confirmTitleEl.textContent = title;
+                    confirmMessageEl.textContent = message;
+                    confirmOkBtn.textContent = confirmText;
+                    confirmCancelBtn.textContent = cancelText;
+                    confirmIconEl.textContent = icon;
+
+                    if (isDanger) {
+                        confirmIconWrapper.className = 'w-12 h-12 rounded-2xl bg-rose-50 border border-rose-100 flex items-center justify-center text-2xl shrink-0 shadow-xs text-rose-600';
+                        confirmOkBtn.className = 'w-full sm:w-1/2 py-3 px-4 rounded-xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 active:scale-[0.98] text-white font-extrabold text-xs shadow-md shadow-rose-600/25 transition-all cursor-pointer';
+                    } else {
+                        confirmIconWrapper.className = 'w-12 h-12 rounded-2xl bg-brand-50 border border-brand-100 flex items-center justify-center text-2xl shrink-0 shadow-xs text-brand-700';
+                        confirmOkBtn.className = 'w-full sm:w-1/2 py-3 px-4 rounded-xl bg-gradient-to-r from-brand-700 to-brand-800 hover:brightness-110 active:scale-[0.98] text-white font-extrabold text-xs shadow-md shadow-brand-800/25 transition-all cursor-pointer';
+                    }
+
+                    activeConfirmCallback = resolve;
+                    confirmModal.classList.remove('opacity-0', 'pointer-events-none');
+                    confirmModal.classList.add('opacity-100', 'pointer-events-auto');
+                    confirmCard.classList.remove('scale-95');
+                    confirmCard.classList.add('scale-100');
+                    confirmOkBtn.focus();
+                });
+            };
+
+            window.closeConfirmDialog = function(result) {
+                confirmModal.classList.remove('opacity-100', 'pointer-events-auto');
+                confirmModal.classList.add('opacity-0', 'pointer-events-none');
+                confirmCard.classList.remove('scale-100');
+                confirmCard.classList.add('scale-95');
+                if (activeConfirmCallback) {
+                    activeConfirmCallback(result);
+                    activeConfirmCallback = null;
+                }
+            };
+
+            confirmOkBtn.addEventListener('click', () => window.closeConfirmDialog(true));
+            confirmCancelBtn.addEventListener('click', () => window.closeConfirmDialog(false));
+            confirmModal.addEventListener('click', (e) => {
+                if (e.target === confirmModal) window.closeConfirmDialog(false);
+            });
+
+            // Alert Dialog
+            let activeAlertCallback = null;
+            const alertModal = document.getElementById('customAlertModal');
+            const alertCard = document.getElementById('customAlertCard');
+            const alertTitleEl = document.getElementById('customAlertTitle');
+            const alertMessageEl = document.getElementById('customAlertMessage');
+            const alertOkBtn = document.getElementById('customAlertOkBtn');
+            const alertIconEl = document.getElementById('customAlertIcon');
+
+            window.showAlertDialog = function(options) {
+                return new Promise((resolve) => {
+                    const title = options.title || 'Notice';
+                    const message = options.message || '';
+                    const icon = options.icon || 'ℹ️';
+
+                    alertTitleEl.textContent = title;
+                    alertMessageEl.textContent = message;
+                    alertIconEl.textContent = icon;
+
+                    activeAlertCallback = resolve;
+                    alertModal.classList.remove('opacity-0', 'pointer-events-none');
+                    alertModal.classList.add('opacity-100', 'pointer-events-auto');
+                    alertCard.classList.remove('scale-95');
+                    alertCard.classList.add('scale-100');
+                    alertOkBtn.focus();
+                });
+            };
+
+            window.closeAlertDialog = function() {
+                alertModal.classList.remove('opacity-100', 'pointer-events-auto');
+                alertModal.classList.add('opacity-0', 'pointer-events-none');
+                alertCard.classList.remove('scale-100');
+                alertCard.classList.add('scale-95');
+                if (activeAlertCallback) {
+                    activeAlertCallback();
+                    activeAlertCallback = null;
+                }
+            };
+
+            alertOkBtn.addEventListener('click', window.closeAlertDialog);
+            alertModal.addEventListener('click', (e) => {
+                if (e.target === alertModal) window.closeAlertDialog();
+            });
+
+            // Keyboard Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (!confirmModal.classList.contains('pointer-events-none')) {
+                        window.closeConfirmDialog(false);
+                    }
+                    if (!alertModal.classList.contains('pointer-events-none')) {
+                        window.closeAlertDialog();
+                    }
+                }
+            });
+
+            // Universal form submit interceptor for [data-confirm]
+            document.addEventListener('submit', function(e) {
+                const form = e.target;
+                if (form.dataset.confirmed === 'true') return;
+
+                const confirmMsg = form.getAttribute('data-confirm');
+                if (confirmMsg) {
+                    e.preventDefault();
+                    const title = form.getAttribute('data-confirm-title') || 'Confirm Deletion';
+                    const btnText = form.getAttribute('data-confirm-btn') || 'Yes, Delete';
+                    const isDanger = form.getAttribute('data-confirm-danger') !== 'false';
+
+                    window.showConfirmDialog({
+                        title: title,
+                        message: confirmMsg,
+                        confirmText: btnText,
+                        isDanger: isDanger
+                    }).then((confirmed) => {
+                        if (confirmed) {
+                            form.dataset.confirmed = 'true';
+                            form.submit();
+                        }
+                    });
+                }
+            });
+        })();
+    </script>
+
     @yield('scripts')
 </body>
 </html>

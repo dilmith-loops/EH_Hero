@@ -25,7 +25,10 @@
             <a href="{{ route('admin.users.index') }}" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold transition-all">
                 ← Back to List
             </a>
-            <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}" onsubmit="return confirm('Delete this user and all generations?');">
+            <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}"
+                  data-confirm="Are you sure you want to delete participant '{{ addslashes($user->name) }}' and all their generations? This action cannot be undone."
+                  data-confirm-title="Delete Participant"
+                  data-confirm-btn="Yes, Delete">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="px-4 py-2 rounded-xl bg-rose-50 text-rose-700 hover:bg-rose-100 text-xs font-bold transition-all cursor-pointer">
@@ -68,7 +71,10 @@
                                 <a href="{{ route('admin.generations.download', $gen->id) }}" class="flex-1 text-center py-2 px-3 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold text-xs shadow-xs transition-colors">
                                     Download PNG
                                 </a>
-                                <form method="POST" action="{{ route('admin.generations.destroy', $gen->id) }}" onsubmit="return confirm('Delete this generation?');">
+                                <form method="POST" action="{{ route('admin.generations.destroy', $gen->id) }}"
+                                      data-confirm="Are you sure you want to permanently delete this {{ $gen->treat_name ?? 'generation' }} image?"
+                                      data-confirm-title="Delete Generation"
+                                      data-confirm-btn="Yes, Delete">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="p-2 rounded-xl bg-rose-50 text-rose-700 hover:bg-rose-100 transition-colors cursor-pointer" title="Delete">
