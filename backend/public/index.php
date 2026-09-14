@@ -23,6 +23,15 @@ foreach ($dirs as $dir) {
     }
 }
 
+// Auto-detect and copy .env if missing in backend/
+if (!file_exists(__DIR__.'/../.env')) {
+    if (file_exists(__DIR__.'/../../.env')) {
+        @copy(__DIR__.'/../../.env', __DIR__.'/../.env');
+    } elseif (file_exists(__DIR__.'/../.env.hostinger.example')) {
+        @copy(__DIR__.'/../.env.hostinger.example', __DIR__.'/../.env');
+    }
+}
+
 // Determine if the application is in maintenance mode...
 if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;

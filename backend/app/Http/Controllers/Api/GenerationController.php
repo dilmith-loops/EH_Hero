@@ -19,42 +19,54 @@ class GenerationController extends Controller
      */
     public function checkLimit(Request $request): JsonResponse
     {
-        if (Setting::isMaintenanceEnabled()) {
+        try {
+            if (Setting::isMaintenanceEnabled()) {
+                return response()->json([
+                    'maintenance' => true,
+                    'limit_enabled' => true,
+                    'can_generate' => false,
+                    'max_limit' => 0,
+                    'current_count' => 0,
+                    'remaining' => 0,
+                    'period' => 'maintenance',
+                    'message' => Setting::getMaintenanceMessage(),
+                ], 503);
+            }
+
+            $clientIp = $request->ip();
+            $limitEnabled = Setting::isLimitEnabled();
+            $maxLimit = Setting::getMaxGenerationsPerIp();
+            $period = Setting::getLimitPeriod();
+
+            $query = Generation::where('ip_address', $clientIp);
+            if ($period === 'daily') {
+                $query->whereDate('created_at', Carbon::today());
+            }
+
+            $currentCount = $query->count();
+            $remaining = max(0, $maxLimit - $currentCount);
+            $canGenerate = !$limitEnabled || ($currentCount < $maxLimit);
+
             return response()->json([
-                'maintenance' => true,
-                'limit_enabled' => true,
-                'can_generate' => false,
-                'max_limit' => 0,
+                'limit_enabled' => $limitEnabled,
+                'can_generate' => $canGenerate,
+                'max_limit' => $maxLimit,
+                'current_count' => $currentCount,
+                'remaining' => $limitEnabled ? $remaining : null,
+                'period' => $period,
+                'message' => !$canGenerate ? Setting::getLimitMessage() : null,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'limit_enabled' => false,
+                'can_generate' => true,
+                'max_limit' => 999,
                 'current_count' => 0,
-                'remaining' => 0,
-                'period' => 'maintenance',
-                'message' => Setting::getMaintenanceMessage(),
-            ], 503);
+                'remaining' => null,
+                'period' => 'lifetime',
+                'message' => null,
+            ]);
         }
-
-        $clientIp = $request->ip();
-        $limitEnabled = Setting::isLimitEnabled();
-        $maxLimit = Setting::getMaxGenerationsPerIp();
-        $period = Setting::getLimitPeriod();
-
-        $query = Generation::where('ip_address', $clientIp);
-        if ($period === 'daily') {
-            $query->whereDate('created_at', Carbon::today());
-        }
-
-        $currentCount = $query->count();
-        $remaining = max(0, $maxLimit - $currentCount);
-        $canGenerate = !$limitEnabled || ($currentCount < $maxLimit);
-
-        return response()->json([
-            'limit_enabled' => $limitEnabled,
-            'can_generate' => $canGenerate,
-            'max_limit' => $maxLimit,
-            'current_count' => $currentCount,
-            'remaining' => $limitEnabled ? $remaining : null,
-            'period' => $period,
-            'message' => !$canGenerate ? Setting::getLimitMessage() : null,
-        ]);
     }
 
     /**
