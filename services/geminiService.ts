@@ -125,7 +125,6 @@ export async function getActiveGeminiApiKey(): Promise<string> {
   // 1. Fetch from server backend .env (primary source, never committed to git)
   const backendKey = await fetchGeminiKeyFromBackend();
   if (backendKey) {
-    console.log('[Gemini API Key] Successfully loaded key from backend .env');
     cachedGeminiApiKey = backendKey;
     return cachedGeminiApiKey;
   }
@@ -133,7 +132,6 @@ export async function getActiveGeminiApiKey(): Promise<string> {
   // 2. Fallback to process.env (for local development)
   const envKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
   if (envKey && typeof envKey === 'string' && envKey.trim()) {
-    console.log('[Gemini API Key] Using local environment fallback key');
     cachedGeminiApiKey = envKey.trim();
     return cachedGeminiApiKey;
   }
