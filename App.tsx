@@ -278,14 +278,15 @@ const App: React.FC = () => {
         });
       }
     } catch (err: any) {
-      console.error('❌ [Generation Error] Detailed error:', err);
-      if (err?.message) {
-        console.error('❌ [Generation Error] Message:', err.message);
-      }
-      if (err?.status) {
-        console.error('❌ [Generation Error] HTTP Status:', err.status);
-      }
-      setError(err?.message || 'Too many generations, please try again.');
+      const rawMsg = err?.message || 'Transformation failed';
+      const cleanMsg = rawMsg
+        .replace(/AIzaSy[a-zA-Z0-9_\-]{20,}/g, 'AIzaSy***[REDACTED]***')
+        .replace(/api_key:['"]?[a-zA-Z0-9_\-\.]+['"]?/gi, 'api_key:***[REDACTED]***')
+        .replace(/AQ\.[a-zA-Z0-9_\-\.]{15,}/gi, 'AQ.***[REDACTED]***')
+        .replace(/([?&]key=)[a-zA-Z0-9_\-]+/gi, '$1***[REDACTED]***');
+
+      console.error('❌ [Generation Error]:', cleanMsg, err?.status ? `(Status: ${err.status})` : '');
+      setError(cleanMsg);
     } finally {
       setLoading(false);
     }

@@ -98,6 +98,27 @@ export const ANIME_STYLES: AnimeStylePreset[] = [
 
 let cachedGeminiApiKey: string | null = null;
 
+/**
+ * Redact any API key, auth tokens, or Google consumer key identifiers from error messages
+ * so that sensitive keys are NEVER exposed in the browser console.
+ */
+export function sanitizeErrorMessage(input: any): string {
+  if (!input) return '';
+  let text = typeof input === 'string' ? input : (input.message || JSON.stringify(input));
+
+  // Mask standard Gemini keys (AIzaSy...)
+  text = text.replace(/AIzaSy[a-zA-Z0-9_\-]{20,}/g, 'AIzaSy***[REDACTED]***');
+
+  // Mask Google internal consumer/container key (api_key:AQ... or api_key:...)
+  text = text.replace(/api_key:['"]?[a-zA-Z0-9_\-\.]+['"]?/gi, 'api_key:***[REDACTED]***');
+  text = text.replace(/AQ\.[a-zA-Z0-9_\-\.]{15,}/gi, 'AQ.***[REDACTED]***');
+  text = text.replace(/([?&]key=)[a-zA-Z0-9_\-]+/gi, '$1***[REDACTED]***');
+  text = text.replace(/("api_key"\s*:\s*")[^"]+(")/gi, '$1***[REDACTED]***$2');
+  text = text.replace(/("apiKey"\s*:\s*")[^"]+(")/gi, '$1***[REDACTED]***$2');
+
+  return text;
+}
+
 export async function getActiveGeminiApiKey(): Promise<string> {
   if (cachedGeminiApiKey) return cachedGeminiApiKey;
 
@@ -243,16 +264,19 @@ ${customInstruction}${treatImageReferenceNotice}`;
       }
     } catch (err: any) {
       lastError = err;
-      console.error(`❌ [Gemini API Error] Model "${modelName}" failed:`, {
-        status: err?.status,
-        message: err?.message,
-        error: err,
-      });
+      const cleanMsg = sanitizeErrorMessage(err?.message || err);
+      console.error(`❌ [Gemini API Error] Model "${modelName}" failed:`, cleanMsg, err?.status ? `(Status: ${err.status})` : '');
     }
   }
 
-  console.error('❌ [Gemini API Error] All candidate models failed. Last error:', lastError);
-  throw lastError || new Error('Transformation failed across all models. Check console for details.');
+  const cleanLastMsg = sanitizeErrorMessage(lastError?.message || lastError);
+  console.error('❌ [Gemini API Error] All candidate models failed:', cleanLastMsg);
+
+  const cleanError: any = new Error(cleanLastMsg || 'Transformation failed across all models. Check console for details.');
+  if (lastError?.status) {
+    cleanError.status = lastError.status;
+  }
+  throw cleanError;
 }
 
 /** Overlay public/wonder.png logo seamlessly onto bottom center of generated image. */
