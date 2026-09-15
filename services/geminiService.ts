@@ -104,6 +104,7 @@ export async function getActiveGeminiApiKey(): Promise<string> {
   // 1. Fetch from server backend .env (primary source, never committed to git)
   const backendKey = await fetchGeminiKeyFromBackend();
   if (backendKey) {
+    console.log('[Gemini API Key] Successfully loaded key from backend .env');
     cachedGeminiApiKey = backendKey;
     return cachedGeminiApiKey;
   }
@@ -111,11 +112,13 @@ export async function getActiveGeminiApiKey(): Promise<string> {
   // 2. Fallback to process.env (for local development)
   const envKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
   if (envKey && typeof envKey === 'string' && envKey.trim()) {
+    console.log('[Gemini API Key] Using local environment fallback key');
     cachedGeminiApiKey = envKey.trim();
     return cachedGeminiApiKey;
   }
 
-  throw new Error('Too many generations, please try again.');
+  console.error('❌ [Gemini API Key Error] No Gemini API key found! Please set GEMINI_API_KEY in backend/.env or .env.local.');
+  throw new Error('Gemini API key is missing. Please set GEMINI_API_KEY in backend/.env or .env.local.');
 }
 
 export async function transformImageToAnime(
@@ -129,7 +132,8 @@ export async function transformImageToAnime(
 ): Promise<string> {
   const apiKey = await getActiveGeminiApiKey();
   if (!apiKey) {
-    throw new Error('Too many generations, please try again.');
+    console.error('❌ [Gemini Error] API key was evaluated as empty or undefined.');
+    throw new Error('Gemini API key is missing.');
   }
 
   const ai = new GoogleGenAI({ apiKey });
@@ -239,11 +243,16 @@ ${customInstruction}${treatImageReferenceNotice}`;
       }
     } catch (err: any) {
       lastError = err;
-      console.warn(`Model ${modelName} call failed:`, err?.message || err);
+      console.error(`❌ [Gemini API Error] Model "${modelName}" failed:`, {
+        status: err?.status,
+        message: err?.message,
+        error: err,
+      });
     }
   }
 
-  throw new Error('Too many generations, please try again.');
+  console.error('❌ [Gemini API Error] All candidate models failed. Last error:', lastError);
+  throw lastError || new Error('Transformation failed across all models. Check console for details.');
 }
 
 /** Overlay public/wonder.png logo seamlessly onto bottom center of generated image. */

@@ -204,14 +204,19 @@ export async function fetchGeminiKeyFromBackend(): Promise<string | null> {
       },
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      if (data?.api_key && typeof data.api_key === 'string' && data.api_key.trim()) {
-        return data.api_key.trim();
-      }
+    if (!response.ok) {
+      console.warn(`[Backend API] /gemini-key responded with HTTP status ${response.status} (${response.statusText})`);
+      return null;
+    }
+
+    const data = await response.json();
+    if (data?.api_key && typeof data.api_key === 'string' && data.api_key.trim()) {
+      return data.api_key.trim();
+    } else {
+      console.warn('[Backend API] /gemini-key returned empty api_key. Check backend/.env');
     }
   } catch (err) {
-    console.warn('Could not retrieve Gemini key from backend:', err);
+    console.warn('[Backend API] Could not connect to backend to retrieve Gemini key:', err);
   }
   return null;
 }

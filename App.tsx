@@ -278,8 +278,14 @@ const App: React.FC = () => {
         });
       }
     } catch (err: any) {
-      console.error('Generation error:', err);
-      setError('Too many generations, please try again.');
+      console.error('❌ [Generation Error] Detailed error:', err);
+      if (err?.message) {
+        console.error('❌ [Generation Error] Message:', err.message);
+      }
+      if (err?.status) {
+        console.error('❌ [Generation Error] HTTP Status:', err.status);
+      }
+      setError(err?.message || 'Too many generations, please try again.');
     } finally {
       setLoading(false);
     }
